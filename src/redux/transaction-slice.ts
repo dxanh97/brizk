@@ -5,7 +5,7 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 import { RootState } from './store';
 import { addTags, deleteTag, tagSelectors } from './tag-slice';
@@ -63,7 +63,7 @@ export const addTransaction = createAsyncThunk<
 
   const newTransaction: Transaction = {
     ...createTransaction,
-    id: uuid(),
+    id: nanoid(),
     tagIds: [...newTagIds, ...createTransaction.tagIds],
   };
 

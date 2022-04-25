@@ -5,7 +5,7 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 import { RootState } from './store';
 import { selectTransactionsWithTagId } from './transaction-slice';
@@ -32,7 +32,7 @@ export const addTags = createAsyncThunk<Tag[], TagCM[], { state: RootState }>(
   (createTags) => {
     const tags: Tag[] = createTags.map((t) => ({
       ...t,
-      id: uuid(),
+      id: nanoid(),
     }));
 
     return tags;
