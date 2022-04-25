@@ -1,7 +1,7 @@
 interface Transaction {
   id: string;
   amount: number;
-  date: Date;
+  timestamp: ReturnType<Date['getTime']>;
   tagIds: Array<Tag['id']>;
   category?: 'MUST_HAVE' | 'NICE_TO_HAVE';
 }
@@ -20,6 +20,8 @@ interface Tag {
 }
 
 type TagCM = Omit<Tag, 'id'>;
+
+type TagVM = Tag;
 
 type Editable<T, K extends keyof T> = Partial<Omit<T, K>> & Pick<T, K>;
 
