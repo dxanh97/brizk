@@ -54,6 +54,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     ReactFontManager.getInstance().addCustomFont(this, "mulish", R.font.mulish);
+    ReactFontManager.getInstance().addCustomFont(this, "ptmono", R.font.ptmono);
     // If you opted-in for the New Architecture, we enable the TurboModule system
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
