@@ -1,19 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import AddTransactionBottomSheet from "./components/AddTransactionBottomSheet";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
-}
+const App: React.FC = () => (
+  <SafeAreaView style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
+      <AddTransactionBottomSheet />
+    </GestureHandlerRootView>
+  </SafeAreaView>
+);
+
+export default App;
