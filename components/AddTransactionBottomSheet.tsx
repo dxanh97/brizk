@@ -2,6 +2,8 @@ import React, { useCallback, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
 
+import TransactionDeckSwiper from "./TransactionDeckSwiper";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,6 +35,7 @@ const AddTransactionBottomSheet: React.FC = () => {
       >
         <View style={styles.contentContainer}>
           <Text>Awesome 🎉</Text>
+          <TransactionDeckSwiper />
         </View>
       </BottomSheet>
     </View>
