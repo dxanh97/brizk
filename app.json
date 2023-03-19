@@ -2,6 +2,7 @@
   "expo": {
     "name": "brizk",
     "slug": "brizk",
+    "scheme": "brizk",
     "version": "0.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +23,14 @@
       }
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6ebf5ab6-ed8f-417f-9eee-6da3e1e987c3"
+      }
+    },
+    "owner": "dxanh97"
   }
 }
