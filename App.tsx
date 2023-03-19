@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import styled, { ThemeProvider } from "styled-components";
 
 import AddTransactionBottomSheet from "./components/AddTransactionBottomSheet";
+import AppBar from "./components/AppBar";
 
 import theme from "./utils/theme";
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <AppWrapper>
         <StatusBar style="inverted" />
+        <AppBar />
         <StyledGestureHandlerRootView>
           <AddTransactionBottomSheet
             open={openAddTransaction}
