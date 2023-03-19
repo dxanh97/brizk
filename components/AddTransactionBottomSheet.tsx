@@ -1,44 +1,76 @@
-import React, { useCallback, useRef } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useRef } from "react";
+import { Pressable, Text, View } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
+import styled, { useTheme } from "styled-components";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import TransactionDeckSwiper from "./TransactionDeckSwiper";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: "grey",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-});
+const Wrapper = styled(View)`
+  flex: 1;
+  padding: 24px;
+`;
+const DeckWrapper = styled(View)`
+  flex: 1;
+`;
+const Header = styled(View)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
+`;
+const Title = styled(Text)`
+  font-family: "DM-Sans";
+  font-size: 24px;
+  line-height: 36px;
+  color: ${(props) => props.theme.colors.white};
+`;
+const CloseButton = styled(Pressable)`
+  position: absolute;
+  right: 16px;
+`;
 
-const snapPoints = ["25%", "50%"];
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
 
-const AddTransactionBottomSheet: React.FC = () => {
+const AddTransactionBottomSheet: React.FC<Props> = ({ open, onClose }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const theme = useTheme();
 
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
-
+  if (!open) return null;
   return (
-    <View style={styles.container}>
+    <Wrapper>
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
+        snapPoints={["100%"]}
+        enablePanDownToClose
+        onClose={onClose}
+        backgroundStyle={{
+          backgroundColor: theme.bottomSheetBackground,
+          borderRadius: 0,
+        }}
+        handleComponent={null}
       >
-        <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
+        <DeckWrapper>
+          <Header>
+            <Title>New Transaction</Title>
+            <CloseButton onPress={() => bottomSheetRef.current?.close()}>
+              <MaterialIcons
+                name="close"
+                size={24}
+                color={theme.colors.white}
+              />
+            </CloseButton>
+          </Header>
           <TransactionDeckSwiper />
-        </View>
+        </DeckWrapper>
       </BottomSheet>
-    </View>
+    </Wrapper>
   );
 };
 
