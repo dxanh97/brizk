@@ -8,6 +8,7 @@
       2,
       { "namedComponents": "arrow-function" }
     ],
-    "react/style-prop-object": [0]
+    "react/style-prop-object": [0],
+    "react/require-default-props": [0]
   }
 }
