@@ -13,10 +13,10 @@ import styled, { ThemeProvider } from "styled-components";
 import AddTransactionBottomSheet from "../components/AddTransactionBottomSheet";
 import AppBar from "../components/AppBar";
 
-import theme from "../utils/theme";
+import _theme from "../utils/theme";
 
 const AppWrapper = styled(View)<{ insetTop: number }>`
-  background-color: ${(props) => props.theme.background};
+  background-color: ${({ theme }) => theme.neutral.get(1)};
   flex: 1;
   padding-top: ${(props) => props.insetTop}px;
 `;
@@ -26,9 +26,9 @@ const StyledGestureHandlerRootView = styled(GestureHandlerRootView)`
 
 const AppContent: React.FC = () => {
   const [fontLoaded] = useFonts({
-    "DM-Mono": require("../assets/fonts/DM-Mono.ttf"),
-    "DM-Sans": require("../assets/fonts/DM-Sans.ttf"),
-    "PT-Mono": require("../assets/fonts/PT-Mono.ttf"),
+    "DM Mono": require("../assets/fonts/DM-Mono.ttf"),
+    "DM Sans": require("../assets/fonts/DM-Sans.ttf"),
+    "PT Mono": require("../assets/fonts/PT-Mono.ttf"),
   });
   const { top: insetTop } = useSafeAreaInsets();
   const [openAddTransaction, setOpenAddTransaction] = useState(true);
@@ -49,7 +49,7 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  <ThemeProvider theme={theme}>
+  <ThemeProvider theme={_theme}>
     <SafeAreaProvider>
       <AppContent />
     </SafeAreaProvider>

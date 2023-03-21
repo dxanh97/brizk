@@ -4,7 +4,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import styled, { useTheme } from "styled-components";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import TransactionDeckSwiper from "./TransactionDeckSwiper";
+import TransactionDeckSwiper from "./transaction-deck-swiper";
 
 const Wrapper = styled(View)`
   flex: 1;
@@ -22,10 +22,10 @@ const Header = styled(View)`
   padding: 20px;
 `;
 const Title = styled(Text)`
-  font-family: "DM-Sans";
+  font-family: "DM Sans";
   font-size: 24px;
   line-height: 36px;
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.neutral.get(13)};
 `;
 const CloseButton = styled(Pressable)`
   position: absolute;
@@ -51,7 +51,7 @@ const AddTransactionBottomSheet: React.FC<Props> = ({ open, onClose }) => {
         enablePanDownToClose
         onClose={onClose}
         backgroundStyle={{
-          backgroundColor: theme.bottomSheetBackground,
+          backgroundColor: theme.neutral.get(2),
           borderRadius: 0,
         }}
         handleComponent={null}
@@ -63,7 +63,7 @@ const AddTransactionBottomSheet: React.FC<Props> = ({ open, onClose }) => {
               <MaterialIcons
                 name="close"
                 size={24}
-                color={theme.colors.white}
+                color={theme.neutral.get(13)}
               />
             </CloseButton>
           </Header>

@@ -4,7 +4,7 @@ import styled, { useTheme } from "styled-components";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Wrapper = styled(View)`
-  background-color: ${(props) => props.theme.background};
+  background-color: ${({ theme }) => theme.neutral.get(0)};
   display: flex;
   flex-direction: row;
   padding: 20px;
@@ -15,11 +15,10 @@ const LogoWrapper = styled(View)`
   flex-direction: row;
 `;
 const LogoText = styled(Text)<{ isDot?: boolean }>`
-  color: ${(props) =>
-    props.isDot ? props.theme.colors.green : props.theme.colors.white};
+  color: ${({ isDot, theme }) => (isDot ? theme.green : theme.neutral.get(13))};
   font-size: 22px;
   line-height: 28px;
-  font-family: "DM-Mono";
+  font-family: "DM Mono";
   font-weight: 600;
 `;
 
@@ -27,7 +26,7 @@ const AppBar: React.FC = () => {
   const theme = useTheme();
   return (
     <Wrapper>
-      <MaterialIcons name="menu" size={24} color={theme.colors.white} />
+      <MaterialIcons name="menu" size={24} color={theme.neutral.get(13)} />
       <LogoWrapper>
         <LogoText>brizk</LogoText>
         <LogoText isDot>.</LogoText>
@@ -36,7 +35,7 @@ const AppBar: React.FC = () => {
       <MaterialIcons
         name="account-circle"
         size={24}
-        color={theme.colors.white}
+        color={theme.neutral.get(13)}
       />
     </Wrapper>
   );
