@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 import React, { useState } from "react";
+import { Provider } from "react-redux";
 import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
@@ -10,10 +11,11 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import styled, { ThemeProvider } from "styled-components";
 
+import store from "../store";
+import _theme from "../utils/theme";
+
 import AddTransactionBottomSheet from "../components/AddTransactionBottomSheet";
 import AppBar from "../components/AppBar";
-
-import _theme from "../utils/theme";
 
 const AppWrapper = styled(View)<{ insetTop: number }>`
   background-color: ${({ theme }) => theme.neutral.get(1)};
@@ -49,11 +51,13 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  <ThemeProvider theme={_theme}>
-    <SafeAreaProvider>
-      <AppContent />
-    </SafeAreaProvider>
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={_theme}>
+      <SafeAreaProvider>
+        <AppContent />
+      </SafeAreaProvider>
+    </ThemeProvider>
+  </Provider>
 );
 
 export default App;
