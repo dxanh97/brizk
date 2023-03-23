@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
-import transactionsSlice from "./transaction.slice";
+import transactionsSlice from "./transactions.slice";
 
 const store = configureStore({
   reducer: {
