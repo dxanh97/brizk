@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
+import * as Crypto from "expo-crypto";
 import Swiper from "react-native-deck-swiper";
 import { useTheme } from "styled-components";
 
-import { Category, MustHave, NiceToHave } from "../../utils/types";
+import { useAppDispatch } from "../../store";
+import { addTransaction } from "../../store/transaction.slice";
 
-import TransactionCard from "./TransactionCard";
+import { Category, MustHave, NiceToHave, Transaction } from "../../utils/types";
+
+import TransactionCard, { ForwardedRef } from "./TransactionCard";
+
+const cardsPlaceholder = new Array(1000).fill(0);
 
 const TransactionDeckSwiper: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const theme = useTheme();
   const [selectingCategory, setSelectingCategory] = useState<Category>();
-  const resetSelectingCategory = () => setSelectingCategory(undefined);
+  const topCardRef = useRef<ForwardedRef>(null);
+  const resetSelectingCategory = () => {
+    setSelectingCategory(undefined);
+  };
 
-  const [, setTransaction] = useState("");
   const handleOnSwiping = (x: number) => {
     if (x <= -10) {
       setSelectingCategory(MustHave);
@@ -25,28 +35,46 @@ const TransactionDeckSwiper: React.FC = () => {
     }
   };
 
+  const [onTopIndex, setOnTopIndex] = useState(0);
+  const handleOnSwiped = (cardIndex: number) => {
+    const amount = topCardRef.current?.getAmount() || 0;
+    const transaction: Transaction = {
+      id: Crypto.randomUUID(),
+      amount,
+      tags: [],
+      timestamp: new Date().getTime(),
+      category: selectingCategory,
+    };
+    dispatch(addTransaction(transaction));
+
+    setOnTopIndex(cardIndex + 1);
+    resetSelectingCategory();
+  };
+
   return (
     <View>
       <Swiper
-        cards={[0, 1]}
-        backgroundColor={theme.neutral.get(2)}
-        stackSize={2}
         infinite
+        stackSize={2}
+        cards={cardsPlaceholder}
         animateCardOpacity
         animateOverlayLabelsOpacity
-        overlayOpacityHorizontalThreshold={10}
-        overlayOpacityVerticalThreshold={10}
         onSwiping={handleOnSwiping}
+        overlayOpacityVerticalThreshold={10}
+        overlayOpacityHorizontalThreshold={10}
+        backgroundColor={theme.neutral.get(2)}
         onSwipedAborted={resetSelectingCategory}
-        onSwiped={resetSelectingCategory}
-        renderCard={() => (
-          <TransactionCard
-            // TODO: update logic on top
-            onTopOfDeck
-            selectingCategory={selectingCategory}
-            onAmountChange={setTransaction}
-          />
-        )}
+        onSwiped={handleOnSwiped}
+        renderCard={(_, index) => {
+          const isOnTop = onTopIndex === index;
+          return (
+            <TransactionCard
+              ref={isOnTop ? topCardRef : null}
+              onTopOfDeck={isOnTop}
+              selectingCategory={selectingCategory}
+            />
+          );
+        }}
       />
     </View>
   );
