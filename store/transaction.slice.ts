@@ -11,19 +11,23 @@ const transactionsAdaptor = createEntityAdapter<Transaction>({
   sortComparer: (a, b) => (a.timestamp < b.timestamp ? -1 : 1),
 });
 
+interface TagMap {
+  [tag: string]: Array<Transaction["id"]>;
+}
+
 const transactionsSlice = createSlice({
   name: "transactions",
   initialState: {
     ...transactionsAdaptor.getInitialState(),
-    tagMap: new Map<string, Array<Transaction["id"]>>(),
+    tagMap: {} as TagMap,
   },
   reducers: {
     addTransaction: (state, action: PayloadAction<Transaction>) => {
       const transaction = action.payload;
       transactionsAdaptor.addOne(state, transaction);
       transaction.tags.forEach((t) => {
-        const transactionIds = state.tagMap.get(t) ?? [];
-        state.tagMap.set(t, [...transactionIds, transaction.id]);
+        const transactionIds = state.tagMap[t] ?? [];
+        state.tagMap[t] = [...transactionIds, transaction.id];
       });
     },
     updateTransaction: (state, action: PayloadAction<Transaction>) => {
@@ -35,20 +39,20 @@ const transactionsSlice = createSlice({
         .selectById(state, transaction.id);
       const oldTags = oldTransaction!.tags;
       oldTags.forEach((t) => {
-        const transactionIds = state.tagMap.get(t);
+        const transactionIds = state.tagMap[t];
         const newTransactionIds = transactionIds!.filter(
           (tr) => tr !== transaction.id,
         );
         if (newTransactionIds.length === 0) {
-          state.tagMap.delete(t);
+          delete state.tagMap[t];
         } else {
-          state.tagMap.set(t, newTransactionIds);
+          state.tagMap[t] = newTransactionIds;
         }
       });
       const newTags = transaction.tags;
       newTags.forEach((t) => {
-        const transactionIds = state.tagMap.get(t) ?? [];
-        state.tagMap.set(t, [...transactionIds, transaction.id]);
+        const transactionIds = state.tagMap[t] ?? [];
+        state.tagMap[t] = [...transactionIds, transaction.id];
       });
       // #endregion
 
@@ -66,14 +70,14 @@ const transactionsSlice = createSlice({
         .selectById(state, transactionId);
       const { tags } = transaction!;
       tags.forEach((t) => {
-        const transactionIds = state.tagMap.get(t);
+        const transactionIds = state.tagMap[t];
         const newTransactionIds = transactionIds!.filter(
           (tr) => tr !== transactionId,
         );
         if (newTransactionIds.length === 0) {
-          state.tagMap.delete(t);
+          delete state.tagMap[t];
         } else {
-          state.tagMap.set(t, newTransactionIds);
+          state.tagMap[t] = newTransactionIds;
         }
       });
       // #endregion
@@ -83,4 +87,9 @@ const transactionsSlice = createSlice({
   },
 });
 
+export const {
+  addTransaction,
+  updateTransaction,
+  deleteTransaction,
+} = transactionsSlice.actions;
 export default transactionsSlice;
