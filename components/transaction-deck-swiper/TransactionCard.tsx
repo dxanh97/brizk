@@ -1,12 +1,23 @@
-import React from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { Text, TextInput, View } from "react-native";
 import { BlurView } from "expo-blur";
+import MaskInput, { createNumberMask } from "react-native-mask-input";
 import styled, { useTheme } from "styled-components";
 
 import { hexToRGBA } from "../../utils/helpers";
 import { Category, MustHave, NiceToHave } from "../../utils/types";
 
 import CategoryTag from "../common/CategoryTag";
+
+const mask = createNumberMask({
+  delimiter: ".",
+  precision: 0,
+});
 
 interface CategoryProps {
   category?: Category;
@@ -38,7 +49,7 @@ const DatePicker = styled(Text)`
   line-height: 16px;
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
-const AmountInput = styled(TextInput)`
+const AmountInput = styled(MaskInput)`
   font-size: 45px;
   line-height: 52px;
   font-weight: 400;
@@ -86,42 +97,56 @@ const StyledBlurContent = styled(Text)`
 interface Props extends CategoryProps {
   onTopOfDeck: boolean;
   selectingCategory?: Category;
-  onAmountChange: (amount: string) => void;
 }
 
-const TransactionCard: React.FC<Props> = ({
-  category,
-  onTopOfDeck,
-  selectingCategory,
-  onAmountChange,
-}) => {
-  const theme = useTheme();
-  return (
-    <Wrapper category={onTopOfDeck ? selectingCategory ?? category : undefined}>
-      <Header>
-        <DatePicker>Today</DatePicker>
-        <CategoryTag category={selectingCategory ?? category} />
-      </Header>
-      <AmountInput
-        autoFocus={onTopOfDeck}
-        enablesReturnKeyAutomatically
-        inputMode="numeric"
-        keyboardType="numeric"
-        placeholder="0"
-        placeholderTextColor={theme.neutral.get(7)}
-        onChangeText={onAmountChange}
-      />
-      <TagInput
-        placeholder="Add tags"
-        placeholderTextColor={theme.neutral.get(7)}
-      />
-      {selectingCategory && (
-        <StyledBlurView intensity={10}>
-          <StyledBlurContent>{selectingCategory}</StyledBlurContent>
-        </StyledBlurView>
-      )}
-    </Wrapper>
-  );
-};
+export interface ForwardedRef {
+  getAmount: () => number;
+}
+
+const TransactionCard = forwardRef<ForwardedRef, Props>(
+  ({ category, onTopOfDeck, selectingCategory }, ref) => {
+    const amountRef = useRef<TextInput>(null);
+    const [amount, setAmount] = useState("");
+    useImperativeHandle(
+      ref,
+      () => ({
+        getAmount: () => parseInt(amount, 10),
+      }),
+      [amount],
+    );
+    const theme = useTheme();
+    return (
+      <Wrapper
+        category={onTopOfDeck ? selectingCategory ?? category : undefined}
+      >
+        <Header>
+          <DatePicker>Today</DatePicker>
+          <CategoryTag category={selectingCategory ?? category} />
+        </Header>
+        <AmountInput
+          ref={amountRef}
+          mask={mask}
+          value={amount}
+          placeholder="0"
+          inputMode="numeric"
+          keyboardType="numeric"
+          autoFocus={onTopOfDeck}
+          enablesReturnKeyAutomatically
+          placeholderTextColor={theme.neutral.get(7)}
+          onChangeText={(_, unmasked) => setAmount(unmasked)}
+        />
+        <TagInput
+          placeholder="Add tags"
+          placeholderTextColor={theme.neutral.get(7)}
+        />
+        {selectingCategory && (
+          <StyledBlurView intensity={10}>
+            <StyledBlurContent>{selectingCategory}</StyledBlurContent>
+          </StyledBlurView>
+        )}
+      </Wrapper>
+    );
+  },
+);
 
 export default TransactionCard;
