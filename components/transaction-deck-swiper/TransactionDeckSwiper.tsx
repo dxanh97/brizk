@@ -7,9 +7,11 @@ import { useTheme } from "styled-components";
 import { useAppDispatch } from "../../store";
 import { addTransaction } from "../../store/transactions.slice";
 
-import { Category, MustHave, NiceToHave, Transaction } from "../../utils/types";
+import { Category, Transaction } from "../../utils/types";
 
 import TransactionCard, { ForwardedRef } from "./TransactionCard";
+
+const { MustHave, NiceToHave, Uncategorized } = Category;
 
 const cardsPlaceholder = new Array(1000).fill(0);
 
@@ -23,12 +25,16 @@ const TransactionDeckSwiper: React.FC = () => {
     setSelectingCategory(undefined);
   };
 
-  const handleOnSwiping = (x: number) => {
+  const handleOnSwiping = (x: number, y: number) => {
     if (x <= -10) {
       setSelectingCategory(MustHave);
     }
     if (x > -10 && x < 10) {
-      resetSelectingCategory();
+      if (y < -10) {
+        setSelectingCategory(Uncategorized);
+      } else {
+        resetSelectingCategory();
+      }
     }
     if (x >= 10) {
       setSelectingCategory(NiceToHave);

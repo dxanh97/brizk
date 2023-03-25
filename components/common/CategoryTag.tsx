@@ -2,8 +2,10 @@ import React from "react";
 import { Text, View } from "react-native";
 import styled from "styled-components";
 
-import { Category, MustHave, NiceToHave } from "../../utils/types";
+import { Category } from "../../utils/types";
 import { hexToRGBA } from "../../utils/helpers";
+
+const { MustHave, NiceToHave, Uncategorized } = Category;
 
 const Wrapper = styled(View)<Props>`
   border-radius: 2px;
@@ -33,7 +35,7 @@ interface Props {
 
 const CategoryTag: React.FC<Props> = ({ category }) => (
   <Wrapper category={category}>
-    <Label category={category}>{category ?? "No categories"}</Label>
+    <Label category={category}>{category ?? Uncategorized}</Label>
   </Wrapper>
 );
 

@@ -10,9 +10,11 @@ import MaskInput, { createNumberMask } from "react-native-mask-input";
 import styled, { useTheme } from "styled-components";
 
 import { hexToRGBA } from "../../utils/helpers";
-import { Category, MustHave, NiceToHave } from "../../utils/types";
+import { Category } from "../../utils/types";
 
 import CategoryTag from "../common/CategoryTag";
+
+const { MustHave, NiceToHave } = Category;
 
 const mask = createNumberMask({
   delimiter: ".",
@@ -69,7 +71,7 @@ const TagInput = styled(TextInput)`
   align-items: center;
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
-const StyledBlurView = styled(BlurView)<CategoryProps>`
+const StyledBlurView = styled(BlurView)`
   position: absolute;
   top: 0;
   left: 0;
@@ -79,11 +81,6 @@ const StyledBlurView = styled(BlurView)<CategoryProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme, category }) => {
-    if (category === MustHave) return theme.green;
-    if (category === NiceToHave) return theme.orange;
-    return hexToRGBA(theme.neutral.get(13)!, 0.12);
-  }};
 `;
 const StyledBlurContent = styled(Text)`
   font-family: "DM Sans";

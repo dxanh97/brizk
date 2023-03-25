@@ -1,6 +1,8 @@
-export const NiceToHave = "Nice to have";
-export const MustHave = "Must have";
-export type Category = typeof NiceToHave | typeof MustHave;
+export enum Category {
+  NiceToHave = "Nice to have",
+  MustHave = "Must have",
+  Uncategorized = "Uncategorized",
+}
 
 export interface Transaction {
   id: string;
