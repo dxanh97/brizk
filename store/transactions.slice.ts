@@ -6,7 +6,7 @@ import {
 
 import { Transaction } from "../utils/types";
 
-const transactionsAdaptor = createEntityAdapter<Transaction>({
+export const transactionsAdaptor = createEntityAdapter<Transaction>({
   selectId: (t) => t.id,
   sortComparer: (a, b) => (a.timestamp < b.timestamp ? -1 : 1),
 });
@@ -87,6 +87,8 @@ const transactionsSlice = createSlice({
   },
 });
 
+// prettier-ignore
+// NOTE: remove ^ when has a chance
 export const {
   addTransaction,
   updateTransaction,
