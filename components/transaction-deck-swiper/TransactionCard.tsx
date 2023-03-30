@@ -9,12 +9,10 @@ import { BlurView } from "expo-blur";
 import MaskInput, { createNumberMask } from "react-native-mask-input";
 import styled, { useTheme } from "styled-components";
 
-import { hexToRGBA } from "../../utils/helpers";
+import { getColorFromCategory, hexToRGBA } from "../../utils/helpers";
 import { Category } from "../../utils/types";
 
 import CategoryTag from "../common/CategoryTag";
-
-const { MustHave, NiceToHave } = Category;
 
 const mask = createNumberMask({
   delimiter: ".",
@@ -22,17 +20,18 @@ const mask = createNumberMask({
 });
 
 interface CategoryProps {
-  category?: Category;
+  category: Category;
 }
 
 const Wrapper = styled(View)<CategoryProps>`
   border-radius: 20px;
   border: 1px solid
-    ${({ theme, category }) => {
-      if (category === MustHave) return theme.green;
-      if (category === NiceToHave) return theme.orange;
-      return hexToRGBA(theme.neutral.get(13)!, 0.12);
-    }};
+    ${({ theme, category }) =>
+      getColorFromCategory({
+        theme,
+        category,
+        neutralOpacity: 0.12,
+      })};
   background-color: #272727;
   padding: 20px;
   position: relative;

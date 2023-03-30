@@ -9,5 +9,5 @@ export interface Transaction {
   amount: number;
   tags: Array<string>;
   timestamp: ReturnType<Date["getTime"]>;
-  category?: Category;
+  category: Category;
 }
