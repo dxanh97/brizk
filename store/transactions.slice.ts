@@ -22,12 +22,14 @@ const transactionsSlice = createSlice({
     tagMap: {} as TagMap,
   },
   reducers: {
-    addTransaction: (state, action: PayloadAction<Transaction>) => {
-      const transaction = action.payload;
-      transactionsAdaptor.addOne(state, transaction);
-      transaction.tags.forEach((t) => {
-        const transactionIds = state.tagMap[t] ?? [];
-        state.tagMap[t] = [...transactionIds, transaction.id];
+    addTransactions: (state, action: PayloadAction<Transaction[]>) => {
+      const transactions = action.payload;
+      transactionsAdaptor.addMany(state, transactions);
+      transactions.forEach((tr) => {
+        tr.tags.forEach((t) => {
+          const transactionIds = state.tagMap[t] ?? [];
+          state.tagMap[t] = [...transactionIds, tr.id];
+        });
       });
     },
     updateTransaction: (state, action: PayloadAction<Transaction>) => {
@@ -90,7 +92,7 @@ const transactionsSlice = createSlice({
 // prettier-ignore
 // NOTE: remove ^ when has a chance
 export const {
-  addTransaction,
+  addTransactions,
   updateTransaction,
   deleteTransaction,
 } = transactionsSlice.actions;

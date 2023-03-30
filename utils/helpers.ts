@@ -1,7 +1,7 @@
 import { DefaultTheme } from "styled-components";
 import { Category } from "./types";
 
-const hexToRGBA = (hex: string, alpha: number) => {
+export const hexToRGBA = (hex: string, alpha: number) => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -20,7 +20,7 @@ interface GetColorFromCategoryArgs {
   opacity?: number;
   neutralOpacity?: number;
 }
-const getColorFromCategory = ({
+export const getColorFromCategory = ({
   theme,
   category,
   neutralShade = 13,
@@ -32,4 +32,5 @@ const getColorFromCategory = ({
   return hexToRGBA(theme.neutral.get(neutralShade)!, neutralOpacity);
 };
 
-export { hexToRGBA, getColorFromCategory };
+export const formatAmount = (amount: number) =>
+  amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

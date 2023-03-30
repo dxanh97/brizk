@@ -1,6 +1,6 @@
 export enum Category {
-  NiceToHave = "Nice to have",
   MustHave = "Must have",
+  NiceToHave = "Nice to have",
   Uncategorized = "Uncategorized",
 }
 

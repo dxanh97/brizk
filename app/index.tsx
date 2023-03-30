@@ -16,6 +16,7 @@ import _theme from "../utils/theme";
 
 import AddTransactionBottomSheet from "../components/AddTransactionBottomSheet";
 import AppBar from "../components/AppBar";
+import Summary from "../components/summary";
 
 const AppWrapper = styled(View)<{ insetTop: number }>`
   background-color: ${({ theme }) => theme.neutral.get(1)};
@@ -33,7 +34,7 @@ const AppContent: React.FC = () => {
     "PT Mono": require("../assets/fonts/PT-Mono.ttf"),
   });
   const { top: insetTop } = useSafeAreaInsets();
-  const [openAddTransaction, setOpenAddTransaction] = useState(true);
+  const [openAddTransaction, setOpenAddTransaction] = useState(false);
 
   if (!fontLoaded) return null;
   return (
@@ -41,6 +42,7 @@ const AppContent: React.FC = () => {
       <StatusBar style="inverted" />
       <AppBar />
       <StyledGestureHandlerRootView>
+        <Summary />
         <AddTransactionBottomSheet
           open={openAddTransaction}
           onClose={() => setOpenAddTransaction(false)}
