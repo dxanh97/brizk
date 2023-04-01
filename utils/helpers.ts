@@ -1,5 +1,8 @@
 import { DefaultTheme } from "styled-components";
-import { Category } from "./types";
+import { DateTime } from "luxon";
+import { groupBy, keys, pickBy } from "lodash";
+
+import { Category, Transaction } from "./types";
 
 export const hexToRGBA = (hex: string, alpha: number) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -34,3 +37,37 @@ export const getColorFromCategory = ({
 
 export const formatAmount = (amount: number) =>
   amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+export const getStartOfTheDay = (timestamp: Transaction["timestamp"]) => {
+  const miliseconds = new Date(timestamp).setHours(0, 0, 0);
+  return miliseconds;
+};
+
+export const getDateString = (timestamp: Transaction["timestamp"]) => {
+  const date = DateTime.fromMillis(getStartOfTheDay(timestamp));
+  return date.toISODate();
+};
+
+export const getMonthAndYear = (timestamp: Transaction["timestamp"]) => {
+  const dateString = getDateString(timestamp);
+  return dateString.slice(0, 7);
+};
+
+export const groupTransactionsByDates = (transactions: Transaction[]) => {
+  const groups = groupBy(transactions, (t) => {
+    const dateMiliseconds = getStartOfTheDay(t.timestamp);
+    const date = DateTime.fromMillis(dateMiliseconds);
+    return date.setLocale("en").toLocaleString(DateTime.DATE_FULL);
+  });
+  const data = Object.entries(groups)
+    .map(([date, transactionList]) => [date, ...transactionList])
+    .flat();
+  const dateIndexes = keys(pickBy(data, (t) => typeof t === "string")).map(
+    (i) => parseInt(i, 10),
+  );
+
+  return {
+    dateIndexes,
+    data,
+  };
+};
