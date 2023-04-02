@@ -53,8 +53,15 @@ export const getMonthAndYear = (timestamp: Transaction["timestamp"]) => {
   return dateString.slice(0, 7);
 };
 
-export const groupTransactionsByDates = (transactions: Transaction[]) => {
-  const groups = groupBy(transactions, (t) => {
+export const groupTransactionsByDates = (
+  transactions: Transaction[],
+  categories: Category[] = [],
+) => {
+  const filteredTransactions =
+    categories.length === 0
+      ? transactions
+      : transactions.filter((t) => categories.includes(t.category));
+  const groups = groupBy(filteredTransactions, (t) => {
     const dateMiliseconds = getStartOfTheDay(t.timestamp);
     const date = DateTime.fromMillis(dateMiliseconds);
     return date.setLocale("en").toLocaleString(DateTime.DATE_FULL);
