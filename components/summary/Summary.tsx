@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { FlatList, ListRenderItem, Text, View } from "react-native";
+import { DateTime } from "luxon";
 import styled from "styled-components";
 
 import { useAppSelector } from "../../store";
@@ -8,6 +9,7 @@ import { selectMonthlyTransactions } from "../../store/transactions.selectors";
 import { Category, Transaction } from "../../utils/types";
 import { getMonthAndYear, groupTransactionsByDates } from "../../utils/helpers";
 
+import MonthChipFilters from "../@common/MonthChipFilters";
 import TransactionItem from "./TransactionItem";
 import CategoryChip from "./CategoryChip";
 
@@ -31,11 +33,11 @@ const FiltersWrapper = styled(View)`
 `;
 
 const Summary: React.FC = () => {
-  const [monthAndYear] = useState(
-    getMonthAndYear(new Date("2023-03-30").getTime()),
+  const [selectedMonth, setSelectedMonth] = useState(
+    DateTime.now().startOf("month"),
   );
   const transactions = useAppSelector((s) =>
-    selectMonthlyTransactions(s, monthAndYear),
+    selectMonthlyTransactions(s, getMonthAndYear(selectedMonth.toMillis())),
   );
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const { data, dateIndexes } = groupTransactionsByDates(
@@ -54,6 +56,10 @@ const Summary: React.FC = () => {
 
   return (
     <Wrapper>
+      <MonthChipFilters
+        selectedMonth={selectedMonth}
+        onMonthChange={setSelectedMonth}
+      />
       <FiltersWrapper>
         {Object.values(Category).map((c) => (
           <CategoryChip
