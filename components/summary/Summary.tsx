@@ -31,7 +31,9 @@ const FiltersWrapper = styled(View)`
 `;
 
 const Summary: React.FC = () => {
-  const [monthAndYear] = useState(getMonthAndYear(new Date().getTime()));
+  const [monthAndYear] = useState(
+    getMonthAndYear(new Date("2023-03-30").getTime()),
+  );
   const transactions = useAppSelector((s) =>
     selectMonthlyTransactions(s, monthAndYear),
   );

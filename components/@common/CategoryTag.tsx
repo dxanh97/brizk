@@ -8,7 +8,7 @@ import { getColorFromCategory } from "../../utils/helpers";
 const Wrapper = styled(View)<Props>`
   border-radius: 2px;
   padding: 4px 8px 4px 8px;
-  background: ${({ theme, category }) =>
+  background: ${({ theme, category = Category.Uncategorized }) =>
     getColorFromCategory({
       theme,
       category,
@@ -22,7 +22,7 @@ const Label = styled(Text)<Props>`
   font-size: 11px;
   line-height: 16px;
   font-weight: 500;
-  color: ${({ theme, category }) =>
+  color: ${({ theme, category = Category.Uncategorized }) =>
     getColorFromCategory({
       theme,
       category,
@@ -31,7 +31,7 @@ const Label = styled(Text)<Props>`
 `;
 
 interface Props {
-  category: Category;
+  category?: Category;
 }
 
 const CategoryTag: React.FC<Props> = ({ category }) => (

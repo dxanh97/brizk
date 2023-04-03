@@ -16,7 +16,7 @@ import _theme from "../utils/theme";
 
 import AddTransactionBottomSheet from "../components/AddTransactionBottomSheet";
 import AppBar from "../components/AppBar";
-import Summary from "../components/summary";
+import Summary from "../components/Summary";
 
 const AppWrapper = styled(View)<{ insetTop: number }>`
   background-color: ${({ theme }) => theme.neutral.get(1)};

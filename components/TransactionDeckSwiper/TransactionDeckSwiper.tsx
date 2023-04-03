@@ -5,7 +5,7 @@ import Swiper from "react-native-deck-swiper";
 import { useTheme } from "styled-components";
 
 import { useAppDispatch } from "../../store";
-import { addTransaction } from "../../store/transactions.slice";
+import { addTransactions } from "../../store/transactions.slice";
 
 import { Category, Transaction } from "../../utils/types";
 
@@ -49,9 +49,9 @@ const TransactionDeckSwiper: React.FC = () => {
       amount,
       tags: [],
       timestamp: new Date().getTime(),
-      category: selectingCategory,
+      category: selectingCategory ?? Category.Uncategorized,
     };
-    dispatch(addTransaction(transaction));
+    dispatch(addTransactions([transaction]));
 
     setOnTopIndex(cardIndex + 1);
     resetSelectingCategory();

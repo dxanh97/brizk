@@ -4,7 +4,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import styled, { useTheme } from "styled-components";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import TransactionDeckSwiper from "./transaction-deck-swiper";
+import TransactionDeckSwiper from "./TransactionDeckSwiper";
 
 const Wrapper = styled(View)`
   flex: 1;

@@ -12,7 +12,7 @@ import styled, { useTheme } from "styled-components";
 import { getColorFromCategory, hexToRGBA } from "../../utils/helpers";
 import { Category } from "../../utils/types";
 
-import CategoryTag from "../common/CategoryTag";
+import CategoryTag from "../@common/CategoryTag";
 
 const mask = createNumberMask({
   delimiter: ".",
@@ -20,13 +20,13 @@ const mask = createNumberMask({
 });
 
 interface CategoryProps {
-  category: Category;
+  category?: Category;
 }
 
 const Wrapper = styled(View)<CategoryProps>`
   border-radius: 20px;
   border: 1px solid
-    ${({ theme, category }) =>
+    ${({ theme, category = Category.Uncategorized }) =>
       getColorFromCategory({
         theme,
         category,
