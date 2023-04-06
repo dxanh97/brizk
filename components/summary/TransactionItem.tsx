@@ -4,11 +4,7 @@ import SwipeableItem from "react-native-swipeable-item";
 import styled from "styled-components";
 
 import { formatAmount, getColorFromCategory } from "../../utils/helpers";
-import { Category, Transaction } from "../../utils/types";
-
-interface CategoryProps {
-  category: Category;
-}
+import { CategoryProps, Transaction } from "../../utils/types";
 
 const TransactionWrapper = styled(View)<CategoryProps>`
   padding: 16px;
@@ -41,11 +37,9 @@ const Tags = styled(Text)`
   color: ${({ theme }) => theme.neutral.get(7)};
 `;
 
-interface Props {
+const TransactionItem: React.FC<{
   data: Transaction;
-}
-
-const TransactionItem: React.FC<Props> = ({ data }) => (
+}> = ({ data }) => (
   <SwipeableItem
     key={data.id}
     item={data}

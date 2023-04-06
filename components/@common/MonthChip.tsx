@@ -31,12 +31,11 @@ const Label = styled(Text)<StyleProps>`
     isActive ? theme.neutral.get(1) : theme.green};
 `;
 
-interface Props extends StyleProps {
+const MonthChip: React.FC<{
   data: DateTime;
+  isActive?: boolean;
   onPress?: () => void;
-}
-
-const MonthChip: React.FC<Props> = ({ data, isActive, onPress }) => (
+}> = ({ data, isActive, onPress }) => (
   <Pressable onPress={onPress}>
     <Wrapper isActive={isActive}>
       <Label isActive={isActive}>{data.toFormat("LL / yyyy")}</Label>

@@ -13,15 +13,10 @@ const Wrapper = styled(View)`
   margin-bottom: 16px;
 `;
 
-interface Props {
+const MonthChipFilters: React.FC<{
   selectedMonth: DateTime;
   onMonthChange: (month: DateTime) => void;
-}
-
-const MonthChipFilters: React.FC<Props> = ({
-  selectedMonth,
-  onMonthChange,
-}) => {
+}> = ({ selectedMonth, onMonthChange }) => {
   const prevMonth = selectedMonth.minus({ months: 1 });
   const nextMonth = selectedMonth.plus({ months: 1 });
   return (

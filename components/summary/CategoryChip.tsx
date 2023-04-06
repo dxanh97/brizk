@@ -56,11 +56,11 @@ const Label = styled(Text)<StyleProps>`
   }};
 `;
 
-interface Props extends StyleProps {
+const CategoryChip: React.FC<{
+  category: Category;
+  isActive: boolean;
   onPress: () => void;
-}
-
-const CategoryChip: React.FC<Props> = ({ category, isActive, onPress }) => (
+}> = ({ category, isActive, onPress }) => (
   <Pressable onPress={onPress}>
     <Wrapper category={category} isActive={isActive}>
       <Label category={category} isActive={isActive}>

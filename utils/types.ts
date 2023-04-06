@@ -4,6 +4,10 @@ export enum Category {
   Uncategorized = "Uncategorized",
 }
 
+export interface CategoryProps {
+  category: Category;
+}
+
 export interface Transaction {
   id: string;
   amount: number;

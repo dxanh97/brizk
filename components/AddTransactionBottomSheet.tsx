@@ -32,12 +32,10 @@ const CloseButton = styled(Pressable)`
   right: 16px;
 `;
 
-interface Props {
+const AddTransactionBottomSheet: React.FC<{
   open: boolean;
   onClose: () => void;
-}
-
-const AddTransactionBottomSheet: React.FC<Props> = ({ open, onClose }) => {
+}> = ({ open, onClose }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const theme = useTheme();
 
