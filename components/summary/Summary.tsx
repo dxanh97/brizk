@@ -4,7 +4,10 @@ import { DateTime } from "luxon";
 import styled from "styled-components";
 
 import { useAppSelector } from "../../store";
-import { selectMonthlyTransactions } from "../../store/transactions.selectors";
+import {
+  selectMonthlyTransactions,
+  selectMonthlySummary,
+} from "../../store/transactions.selectors";
 
 import { Category, Transaction } from "../../utils/types";
 import { getMonthAndYear, groupTransactionsByDates } from "../../utils/helpers";
@@ -12,9 +15,13 @@ import { getMonthAndYear, groupTransactionsByDates } from "../../utils/helpers";
 import MonthChipFilters from "../@common/MonthChipFilters";
 import TransactionItem from "./TransactionItem";
 import CategoryChip from "./CategoryChip";
+import PieChart from "./PieChart";
 
 const Wrapper = styled(View)`
   flex: 1;
+`;
+const SummaryWrapper = styled(View)`
+  padding: 20px 16px;
 `;
 const DateSeparator = styled(Text)`
   font-family: "DM Sans";
@@ -36,8 +43,12 @@ const Summary: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState(
     DateTime.now().startOf("month"),
   );
+  const milliseconds = getMonthAndYear(selectedMonth.toMillis());
+  const monthlySummary = useAppSelector((s) =>
+    selectMonthlySummary(s, milliseconds),
+  );
   const transactions = useAppSelector((s) =>
-    selectMonthlyTransactions(s, getMonthAndYear(selectedMonth.toMillis())),
+    selectMonthlyTransactions(s, milliseconds),
   );
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const { data, dateIndexes } = groupTransactionsByDates(
@@ -54,12 +65,18 @@ const Summary: React.FC = () => {
     [],
   );
 
+  const { mustHave, niceToHave, uncategorized } = monthlySummary;
   return (
     <Wrapper>
       <MonthChipFilters
         selectedMonth={selectedMonth}
         onMonthChange={setSelectedMonth}
       />
+
+      <SummaryWrapper>
+        <PieChart data={[mustHave, niceToHave, uncategorized]} />
+      </SummaryWrapper>
+
       <FiltersWrapper>
         {Object.values(Category).map((c) => (
           <CategoryChip

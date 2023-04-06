@@ -46,12 +46,10 @@ export const selectMonthlySummary = createSelector(
         .filter((t) => t.category === Category.Uncategorized)
         .map((t) => t.amount),
     );
-    const total = mustHave + niceToHave + uncategorized;
     return {
       mustHave,
       niceToHave,
       uncategorized,
-      total,
     };
   },
 );
