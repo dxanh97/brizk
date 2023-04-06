@@ -48,7 +48,7 @@ const CategoryCard = styled(View)`
   justify-content: center;
   align-items: center;
   flex: 1;
-  padding: 16px;
+  padding: 16px 0;
   margin: 0 2px;
   background-color: ${({ theme }) => theme.neutral.get(3)};
 `;

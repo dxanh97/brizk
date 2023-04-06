@@ -21,7 +21,7 @@ import Summary from "../components/Summary";
 const AppWrapper = styled(View)<{ insetTop: number }>`
   background-color: ${({ theme }) => theme.neutral.get(1)};
   flex: 1;
-  padding-top: ${(props) => props.insetTop}px;
+  padding: ${(props) => props.insetTop}px 16px 0;
 `;
 const StyledGestureHandlerRootView = styled(GestureHandlerRootView)`
   flex: 1;
