@@ -119,7 +119,7 @@ const PieChart: React.FC<{
           if (index === 0) category = Category.MustHave;
           if (index === 1) category = Category.NiceToHave;
           return (
-            <CategoryCard>
+            <CategoryCard key={Crypto.randomUUID()}>
               <CategoryLabel category={category}>{category}</CategoryLabel>
               <CategoryAmount category={category}>
                 {getLargeNumberAbbreviation(value)}
