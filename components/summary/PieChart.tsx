@@ -17,6 +17,7 @@ const Wrapper = styled(View)`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px 16px;
 `;
 const RelativeWrapper = styled(View)`
   position: relative;

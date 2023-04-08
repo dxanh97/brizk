@@ -55,12 +55,11 @@ export const getMonthAndYear = (timestamp: Transaction["timestamp"]) => {
 
 export const groupTransactionsByDates = (
   transactions: Transaction[],
-  categories: Category[] = [],
+  category?: Category,
 ) => {
-  const filteredTransactions =
-    categories.length === 0
-      ? transactions
-      : transactions.filter((t) => categories.includes(t.category));
+  const filteredTransactions = !category
+    ? transactions
+    : transactions.filter((t) => t.category === category);
   const groups = groupBy(filteredTransactions, (t) => {
     const dateMiliseconds = getStartOfTheDay(t.timestamp);
     const date = DateTime.fromMillis(dateMiliseconds);
