@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Category, Transaction } from "../../utils/types";
 
 import TransactionItem from "./TransactionItem";
-import CategoryChip from "../Summary/CategoryChip";
+import CategoryChip from "./CategoryChip";
 import { useAppSelector } from "../../store";
 import { selectMonthlyTransactions } from "../../store/transactions.selectors";
 import { getMonthAndYear, groupTransactionsByDates } from "../../utils/helpers";
