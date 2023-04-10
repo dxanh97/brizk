@@ -30,7 +30,7 @@ const Header = styled(Text)`
   line-height: 28px;
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
-const ButtonsWrapper = styled(View)`
+const ChevronButtonsWrapper = styled(View)`
   position: absolute;
   top: 20px;
   left: 0;
@@ -50,8 +50,35 @@ const MonthChipFiltersWrapper = styled(View)`
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+const BottomButtonsWrapper = styled(View)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+`;
+const StyledButton = styled(Pressable)`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
+const StyledButtonLabel = styled(Text)`
+  font-family: "DM Sans";
+  color: ${({ theme }) => theme.neutral.get(6)};
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
 `;
 
 const App: React.FC = () => {
@@ -84,7 +111,7 @@ const App: React.FC = () => {
           <TransactionsFlatList selectedMonth={selectedMonth} />
         </ViewWrapper>
       </ScrollView>
-      <ButtonsWrapper>
+      <ChevronButtonsWrapper>
         <PrevButton
           onPress={() => {
             scrollViewRef.current?.scrollTo({ x: 0 });
@@ -107,13 +134,31 @@ const App: React.FC = () => {
             color={theme.neutral.get(13)}
           />
         </NextButton>
-      </ButtonsWrapper>
+      </ChevronButtonsWrapper>
       <MonthChipFiltersWrapper>
         <MonthChipFilters
           selectedMonth={selectedMonth}
           onMonthChange={setSelectedMonth}
         />
       </MonthChipFiltersWrapper>
+      <BottomButtonsWrapper>
+        <StyledButton>
+          <MaterialIcons
+            name="add-circle"
+            size={24}
+            color={theme.neutral.get(6)}
+          />
+          <StyledButtonLabel>New</StyledButtonLabel>
+        </StyledButton>
+        <StyledButton>
+          <MaterialIcons
+            name="content-copy"
+            size={24}
+            color={theme.neutral.get(6)}
+          />
+          <StyledButtonLabel>Categorize</StyledButtonLabel>
+        </StyledButton>
+      </BottomButtonsWrapper>
     </Wrapper>
   );
 };
