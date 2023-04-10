@@ -4,9 +4,10 @@ import { DateTime } from "luxon";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
 
-import Summary from "../components/Summary";
 import MonthChipFilters from "../components/@common/MonthChipFilters";
-import TransactionsFlatList from "../components/TransactionsFlatList/TransactionsFlatlist";
+import Summary from "../components/Summary";
+import TransactionsFlatList from "../components/TransactionsFlatList";
+import UpsertTransactionBottomSheet from "../components/UpsertTransactionBottomSheet";
 
 const { width } = Dimensions.get("window");
 const viewWidth = width - 32;
@@ -89,6 +90,8 @@ const App: React.FC = () => {
 
   const scrollViewRef = useRef<ScrollView>(null);
 
+  const [openBottomSheet, setOpenBottomSheet] = useState(false);
+
   const theme = useTheme();
   return (
     <Wrapper>
@@ -148,6 +151,7 @@ const App: React.FC = () => {
             name="add-circle"
             size={24}
             color={theme.neutral.get(6)}
+            onPress={() => setOpenBottomSheet(true)}
           />
           <StyledButtonLabel>New</StyledButtonLabel>
         </StyledButton>
@@ -160,6 +164,10 @@ const App: React.FC = () => {
           <StyledButtonLabel>Categorize</StyledButtonLabel>
         </StyledButton>
       </BottomButtonsWrapper>
+      <UpsertTransactionBottomSheet
+        open={openBottomSheet}
+        onClose={() => setOpenBottomSheet(false)}
+      />
     </Wrapper>
   );
 };

@@ -7,8 +7,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import TransactionDeckSwiper from "./TransactionDeckSwiper";
 
 const Wrapper = styled(View)`
-  flex: 1;
-  padding: 24px;
+  /* padding: 24px; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 const DeckWrapper = styled(View)`
   flex: 1;
@@ -32,7 +36,7 @@ const CloseButton = styled(Pressable)`
   right: 16px;
 `;
 
-const AddTransactionBottomSheet: React.FC<{
+const UpsertTransactionBottomSheet: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
@@ -72,4 +76,4 @@ const AddTransactionBottomSheet: React.FC<{
   );
 };
 
-export default AddTransactionBottomSheet;
+export default UpsertTransactionBottomSheet;
