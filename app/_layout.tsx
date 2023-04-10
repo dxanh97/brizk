@@ -14,6 +14,7 @@ import styled, { ThemeProvider } from "styled-components";
 
 import store from "../store";
 import defaultTheme from "../utils/theme";
+import { Font } from "../utils/types";
 
 import AppBar from "../components/AppBar";
 
@@ -28,9 +29,9 @@ const StyledGestureHandlerRootView = styled(GestureHandlerRootView)`
 
 const Layout: React.FC = () => {
   const [fontLoaded] = useFonts({
-    "DM Mono": require("../assets/fonts/DM-Mono.ttf"),
-    "DM Sans": require("../assets/fonts/DM-Sans.ttf"),
-    "PT Mono": require("../assets/fonts/PT-Mono.ttf"),
+    [Font.DM_MONO]: require("../assets/fonts/DM-Mono.ttf"),
+    [Font.DM_SANS]: require("../assets/fonts/DM-Sans.ttf"),
+    [Font.PT_MONO]: require("../assets/fonts/PT-Mono.ttf"),
   });
   const { top: insetTop } = useSafeAreaInsets();
 

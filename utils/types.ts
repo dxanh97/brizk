@@ -4,6 +4,12 @@ export enum Category {
   Uncategorized = "Uncategorized",
 }
 
+export enum Font {
+  DM_MONO = "DM Mono",
+  DM_SANS = "DM Sans",
+  PT_MONO = "PT Mono",
+}
+
 export interface CategoryProps {
   category: Category;
 }
