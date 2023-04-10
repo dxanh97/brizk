@@ -20,7 +20,7 @@ import AppBar from "../components/AppBar";
 const AppWrapper = styled(View)<{ insetTop: number }>`
   flex: 1;
   background-color: ${({ theme }) => theme.neutral.get(1)};
-  padding: ${(props) => props.insetTop}px 16px 0;
+  padding: ${(props) => props.insetTop}px 0 0;
 `;
 const StyledGestureHandlerRootView = styled(GestureHandlerRootView)`
   flex: 1;

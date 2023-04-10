@@ -3,6 +3,7 @@ import { DefaultTheme } from "styled-components";
 const theme: DefaultTheme = {
   green: "#6ffc2d",
   orange: "#ff8f0b",
+  red: "#E74848",
   neutral: new Map([
     [1, "#000000"],
     [2, "#141414"],

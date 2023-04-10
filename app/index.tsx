@@ -13,6 +13,7 @@ const viewWidth = width - 32;
 const Wrapper = styled(View)`
   flex: 1;
   position: relative;
+  padding: 0 16px;
 `;
 const ViewWrapper = styled(View)`
   width: ${viewWidth}px;
