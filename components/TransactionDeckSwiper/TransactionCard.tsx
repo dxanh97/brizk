@@ -125,7 +125,9 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
     <Wrapper category={selectingCategory}>
       <Header>
         <DatePicker>Today</DatePicker>
-        <CategoryTag category={selectingCategory ?? category} />
+        <CategoryTag
+          category={selectingCategory ?? category ?? Category.Uncategorized}
+        />
       </Header>
       <AmountInput
         ref={amountRef}

@@ -85,13 +85,14 @@ const transactionsSlice = createSlice({
     },
     deleteTransaction: (state, action: PayloadAction<Transaction["id"]>) => {
       const transactionId = action.payload;
-
-      // #region handle tagMap
       const transaction = transactionsAdaptor
         .getSelectors()
         .selectById(state, transactionId);
-      const { tags } = transaction!;
-      tags.forEach((t) => {
+
+      if (!transaction) return;
+
+      // #region handle tagMap
+      transaction.tags.forEach((t) => {
         const transactionIds = state.tagMap[t];
         const newTransactionIds = transactionIds!.filter(
           (tr) => tr !== transactionId,
@@ -102,6 +103,16 @@ const transactionsSlice = createSlice({
           state.tagMap[t] = newTransactionIds;
         }
       });
+      // #endregion
+
+      // #region handle monthlyTransactionsMap
+      const monthAndYear = getMonthAndYear(
+        getStartOfTheDay(transaction.timestamp),
+      );
+      const monthlyTransactions = state.monthlyTransactionsMap[monthAndYear];
+      state.monthlyTransactionsMap[monthAndYear] = monthlyTransactions.filter(
+        (id) => id !== transaction.id,
+      );
       // #endregion
 
       transactionsAdaptor.removeOne(state, transactionId);

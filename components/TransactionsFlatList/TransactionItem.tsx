@@ -6,6 +6,8 @@ import styled, { useTheme } from "styled-components";
 
 import { formatAmount, getColorFromCategory } from "../../utils/helpers";
 import { CategoryProps, Transaction } from "../../utils/types";
+import { useAppDispatch } from "../../store";
+import { deleteTransaction } from "../../store/transactions.slice";
 
 const Amount = styled(Text)<CategoryProps>`
   font-family: "PT Mono";
@@ -28,6 +30,7 @@ const Tags = styled(Text)`
 const TransactionItem: React.FC<{
   data: Transaction;
 }> = ({ data }) => {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
 
   const swipeableRef = useRef<Swipeable>(null);
@@ -101,6 +104,7 @@ const TransactionItem: React.FC<{
         theme.red,
         80,
         progress,
+        () => dispatch(deleteTransaction(data.id)),
       )}
     </View>
   );
