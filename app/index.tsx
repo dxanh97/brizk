@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
 
 import MonthChipFilters from "../components/@common/MonthChipFilters";
-import Summary from "../components/Summary";
+import Summary from "../components/summary";
 import TransactionsFlatList from "../components/TransactionsFlatList";
 import UpsertTransactionBottomSheet from "../components/UpsertTransactionBottomSheet";
 

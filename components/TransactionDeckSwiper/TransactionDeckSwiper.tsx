@@ -43,6 +43,9 @@ const TransactionDeckSwiper: React.FC = () => {
 
   const [onTopIndex, setOnTopIndex] = useState(0);
   const handleOnSwiped = (cardIndex: number) => {
+    if (!selectingCategory) {
+      return;
+    }
     const amount = topCardRef.current?.getAmount() || 0;
     const transaction: Transaction = {
       id: Crypto.randomUUID(),
