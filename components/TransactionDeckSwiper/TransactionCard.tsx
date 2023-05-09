@@ -7,9 +7,15 @@ import React, {
 import { Text, TextInput, View } from "react-native";
 import { BlurView } from "expo-blur";
 import MaskInput, { createNumberMask } from "react-native-mask-input";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { DateTime } from "luxon";
 import styled, { useTheme } from "styled-components";
 
-import { getColorFromCategory, hexToRGBA } from "../../utils/helpers";
+import {
+  getColorFromCategory,
+  getStartOfTheDay,
+  hexToRGBA,
+} from "../../utils/helpers";
 import { Category } from "../../utils/types";
 
 import CategoryTag from "../@common/CategoryTag";
@@ -105,6 +111,24 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
     onTopOfDeck,
     selectingCategory: propSelectingCategory,
   } = props;
+  const today = getStartOfTheDay(new Date().getTime());
+  const [selectedDate, setSelectedDate] = useState(today);
+  const isToday = today === selectedDate;
+  const isInSameYear = DateTime.fromMillis(today).hasSame(
+    DateTime.fromMillis(selectedDate),
+    "year",
+  );
+  const formatString = isInSameYear ? "MMM d" : "MMM d, y";
+  const formattedSelectedDate = isToday
+    ? "Today"
+    : DateTime.fromMillis(selectedDate).toFormat(formatString);
+  const [isOpenDatePicker, setIsOpenDatePicker] = useState(false);
+
+  const handleOnConfirmDate = (d: Date) => {
+    const startOfTheDay = getStartOfTheDay(d.getTime());
+    setSelectedDate(startOfTheDay);
+    setIsOpenDatePicker(false);
+  };
 
   const amountRef = useRef<TextInput>(null);
   const [amount, setAmount] = useState("");
@@ -124,7 +148,16 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
   return (
     <Wrapper category={selectingCategory}>
       <Header>
-        <DatePicker>Today</DatePicker>
+        <DateTimePickerModal
+          isVisible={isOpenDatePicker}
+          mode="date"
+          onConfirm={handleOnConfirmDate}
+          date={new Date(selectedDate)}
+          onCancel={() => setIsOpenDatePicker(false)}
+        />
+        <DatePicker onPress={() => setIsOpenDatePicker(true)}>
+          {formattedSelectedDate}
+        </DatePicker>
         <CategoryTag
           category={selectingCategory ?? category ?? Category.Uncategorized}
         />

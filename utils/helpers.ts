@@ -39,8 +39,8 @@ export const formatAmount = (amount: number) =>
   amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 export const getStartOfTheDay = (timestamp: Transaction["timestamp"]) => {
-  const miliseconds = new Date(timestamp).setHours(0, 0, 0);
-  return miliseconds;
+  const date = DateTime.fromMillis(timestamp).startOf("day");
+  return date.toMillis();
 };
 
 export const getDateString = (timestamp: Transaction["timestamp"]) => {
@@ -61,8 +61,8 @@ export const groupTransactionsByDates = (
     ? transactions
     : transactions.filter((t) => t.category === category);
   const groups = groupBy(filteredTransactions, (t) => {
-    const dateMiliseconds = getStartOfTheDay(t.timestamp);
-    const date = DateTime.fromMillis(dateMiliseconds);
+    const dateMilliseconds = getStartOfTheDay(t.timestamp);
+    const date = DateTime.fromMillis(dateMilliseconds);
     return date.setLocale("en").toLocaleString(DateTime.DATE_FULL);
   });
   const data = Object.entries(groups)
