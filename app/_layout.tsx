@@ -10,9 +10,10 @@ import {
 } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import styled, { ThemeProvider } from "styled-components";
 
-import store from "../store";
+import store, { persistor } from "../store";
 import defaultTheme from "../utils/theme";
 import { Font } from "../utils/types";
 
@@ -38,17 +39,19 @@ const Layout: React.FC = () => {
   if (!fontLoaded) return null;
   return (
     <Provider store={store}>
-      <ThemeProvider theme={defaultTheme}>
-        <SafeAreaProvider>
-          <AppWrapper insetTop={insetTop}>
-            <StatusBar style="inverted" />
-            <AppBar />
-            <StyledGestureHandlerRootView>
-              <Slot />
-            </StyledGestureHandlerRootView>
-          </AppWrapper>
-        </SafeAreaProvider>
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={defaultTheme}>
+          <SafeAreaProvider>
+            <AppWrapper insetTop={insetTop}>
+              <StatusBar style="inverted" />
+              <AppBar />
+              <StyledGestureHandlerRootView>
+                <Slot />
+              </StyledGestureHandlerRootView>
+            </AppWrapper>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 };
