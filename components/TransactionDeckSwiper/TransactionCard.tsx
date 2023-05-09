@@ -64,6 +64,14 @@ const AmountInput = styled(MaskInput)`
   color: ${({ theme }) => theme.neutral.get(7)};
   margin: 40px 0;
 `;
+const Tags = styled(Text)`
+  font-family: "DM Sans";
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  padding: 12px 0;
+  color: ${({ theme }) => theme.neutral.get(13)};
+`;
 const TagInput = styled(TextInput)`
   padding: 12px;
   font-family: "DM Sans";
@@ -103,6 +111,7 @@ interface Props extends CategoryProps {
 
 export interface ForwardedRef {
   getAmount: () => number;
+  getTags: () => string[];
 }
 
 const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
@@ -132,12 +141,22 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
 
   const amountRef = useRef<TextInput>(null);
   const [amount, setAmount] = useState("");
+
+  const [currentText, setCurrentText] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const handleOnTagReturn = () => {
+    setCurrentText("");
+    if (tags.includes(currentText)) return;
+    setTags((_) => [..._, currentText]);
+  };
+
   useImperativeHandle(
     ref,
     () => ({
       getAmount: () => parseInt(amount, 10),
+      getTags: () => tags,
     }),
-    [amount],
+    [amount, tags],
   );
 
   const selectingCategory = onTopOfDeck
@@ -174,9 +193,14 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
         placeholderTextColor={theme.neutral.get(7)}
         onChangeText={(_, unmasked) => setAmount(unmasked)}
       />
+      <Tags>{tags.join(", ")}</Tags>
       <TagInput
         placeholder="Add tags"
         placeholderTextColor={theme.neutral.get(7)}
+        blurOnSubmit={false}
+        onChangeText={setCurrentText}
+        value={currentText}
+        onSubmitEditing={handleOnTagReturn}
       />
       {selectingCategory && (
         <StyledBlurView intensity={10}>

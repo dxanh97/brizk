@@ -47,10 +47,11 @@ const TransactionDeckSwiper: React.FC = () => {
       return;
     }
     const amount = topCardRef.current?.getAmount() || 0;
+    const tags = topCardRef.current?.getTags() || [];
     const transaction: Transaction = {
       id: Crypto.randomUUID(),
       amount,
-      tags: [],
+      tags,
       timestamp: new Date().getTime(),
       category: selectingCategory ?? Category.Uncategorized,
     };
