@@ -1,33 +1,31 @@
 import React from "react";
-import { Text, View } from "react-native";
 import styled from "styled-components";
 
-const Wrapper = styled(View)`
+import { FlexCenterBox, Typography } from "../utils/shared-styles";
+import { Font } from "../utils/types";
+
+const Wrapper = styled(FlexCenterBox)`
+  flex-direction: row;
   background-color: ${({ theme }) => theme.neutral.get(0)};
-  display: flex;
-  flex-direction: row;
   padding: 20px;
-  justify-content: center;
-  align-items: center;
 `;
-const LogoWrapper = styled(View)`
-  display: flex;
+const LogoWrapper = styled(FlexCenterBox)`
   flex-direction: row;
 `;
-const LogoText = styled(Text)<{ isDot?: boolean }>`
-  color: ${({ isDot, theme }) => (isDot ? theme.green : theme.neutral.get(13))};
-  font-size: 22px;
-  line-height: 28px;
-  font-family: "DM Mono";
+const LogoText = styled(Typography)<{ isDot?: boolean }>`
+  font-family: ${Font.DM_MONO};
   font-weight: 600;
+  color: ${({ isDot, theme }) => (isDot ? theme.green : theme.neutral.get(13))};
 `;
 
 const AppBar: React.FC = () => (
   <Wrapper>
     <LogoWrapper>
-      <LogoText>brizk</LogoText>
-      <LogoText isDot>.</LogoText>
-      <LogoText>co</LogoText>
+      <LogoText size="Title/M">brizk</LogoText>
+      <LogoText size="Title/M" isDot>
+        .
+      </LogoText>
+      <LogoText size="Title/M">co</LogoText>
     </LogoWrapper>
   </Wrapper>
 );

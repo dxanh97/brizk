@@ -4,7 +4,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Text, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
 import { BlurView } from "expo-blur";
 import MaskInput, { createNumberMask } from "react-native-mask-input";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -19,6 +19,12 @@ import {
 import { Category } from "../../utils/types";
 
 import CategoryTag from "../@common/CategoryTag";
+import {
+  FlexCenterBox,
+  Typography,
+  flexCenter,
+  typography,
+} from "../../utils/shared-styles";
 
 const mask = createNumberMask({
   delimiter: ".",
@@ -43,64 +49,43 @@ const Wrapper = styled(View)<CategoryProps>`
   position: relative;
   overflow: hidden;
 `;
-const Header = styled(View)`
-  display: flex;
+const Header = styled(FlexCenterBox)`
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
 `;
-const DatePicker = styled(Text)`
-  font-family: "DM Sans";
+const DatePicker = styled(Typography)`
   font-weight: 500;
-  font-size: 16px;
-  line-height: 16px;
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
 const AmountInput = styled(MaskInput)`
-  font-size: 45px;
-  line-height: 52px;
+  ${typography};
   font-weight: 400;
-  font-family: "PT Mono";
   color: ${({ theme }) => theme.neutral.get(7)};
   margin: 40px 0;
 `;
-const Tags = styled(Text)`
-  font-family: "DM Sans";
-  font-size: 16px;
-  line-height: 24px;
+const Tags = styled(Typography)`
   letter-spacing: 0.5px;
   padding: 12px 0;
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
 const TagInput = styled(TextInput)`
+  ${typography};
+  ${flexCenter};
   padding: 12px;
-  font-family: "DM Sans";
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
   border-radius: 12px;
   background: ${({ theme }) => hexToRGBA(theme.neutral.get(13)!, 0.04)};
-  display: flex;
-  align-items: center;
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
 const StyledBlurView = styled(BlurView)`
+  ${flexCenter};
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
-const StyledBlurContent = styled(Text)`
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 36px;
+const StyledBlurContent = styled(Typography)`
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
 
@@ -174,7 +159,7 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
           date={new Date(selectedDate)}
           onCancel={() => setIsOpenDatePicker(false)}
         />
-        <DatePicker onPress={() => setIsOpenDatePicker(true)}>
+        <DatePicker size="Body/M" onPress={() => setIsOpenDatePicker(true)}>
           {formattedSelectedDate}
         </DatePicker>
         <CategoryTag
@@ -185,6 +170,8 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
         ref={amountRef}
         mask={mask}
         value={amount}
+        isNumber
+        size="Headline/L"
         placeholder="0"
         inputMode="numeric"
         keyboardType="numeric"
@@ -193,8 +180,9 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
         placeholderTextColor={theme.neutral.get(7)}
         onChangeText={(_, unmasked) => setAmount(unmasked)}
       />
-      <Tags>{tags.join(", ")}</Tags>
+      <Tags size="Body/M">{tags.join(", ")}</Tags>
       <TagInput
+        size="Body/M"
         placeholder="Add tags"
         placeholderTextColor={theme.neutral.get(7)}
         blurOnSubmit={false}
@@ -204,7 +192,9 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
       />
       {selectingCategory && (
         <StyledBlurView intensity={10}>
-          <StyledBlurContent>{selectingCategory}</StyledBlurContent>
+          <StyledBlurContent size="Title/M">
+            {selectingCategory}
+          </StyledBlurContent>
         </StyledBlurView>
       )}
     </Wrapper>

@@ -10,6 +10,11 @@ export enum Font {
   PT_MONO = "PT Mono",
 }
 
+export interface TypographyProps {
+  size: TypographySize;
+  isNumber?: boolean;
+}
+
 export interface CategoryProps {
   category: Category;
 }
@@ -21,3 +26,24 @@ export interface Transaction {
   timestamp: ReturnType<Date["getTime"]>;
   category: Category;
 }
+
+export type TypographySize =
+  | "Label/M"
+  | "Body/S"
+  | "Body/M"
+  | "Title/S"
+  | "Title/M"
+  | "Title/L"
+  | "Headline/M"
+  | "Headline/L";
+
+export const typographySizeMap = new Map<TypographySize, number>([
+  ["Label/M", 11],
+  ["Body/S", 13],
+  ["Body/M", 16],
+  ["Title/S", 19],
+  ["Title/M", 23],
+  ["Title/L", 28],
+  ["Headline/M", 23],
+  ["Headline/L", 40],
+]);

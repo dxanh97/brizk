@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components";
 
 import { Category, CategoryProps } from "../../utils/types";
 import { getColorFromCategory } from "../../utils/helpers";
+import { Typography } from "../../utils/shared-styles";
 
 const Wrapper = styled(View)<CategoryProps>`
   border-radius: 2px;
@@ -17,11 +18,7 @@ const Wrapper = styled(View)<CategoryProps>`
     })};
   align-self: flex-start;
 `;
-const Label = styled(Text)<CategoryProps>`
-  font-family: "DM Sans";
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: 500;
+const Label = styled(Typography)<CategoryProps>`
   color: ${({ theme, category = Category.Uncategorized }) =>
     getColorFromCategory({
       theme,
@@ -32,7 +29,9 @@ const Label = styled(Text)<CategoryProps>`
 
 const CategoryTag: React.FC<CategoryProps> = ({ category }) => (
   <Wrapper category={category}>
-    <Label category={category}>{category}</Label>
+    <Label category={category} size="Label/M">
+      {category}
+    </Label>
   </Wrapper>
 );
 

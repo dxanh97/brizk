@@ -1,9 +1,10 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import styled, { DefaultTheme } from "styled-components";
 
 import { Category } from "../../utils/types";
+import { Typography } from "../../utils/shared-styles";
 
 interface StyleProps {
   category: Category;
@@ -37,10 +38,7 @@ const Wrapper = styled(View)<StyleProps>`
     return getColor(theme, category);
   }};
 `;
-const Label = styled(Text)<StyleProps>`
-  font-family: "DM Sans";
-  font-size: 14px;
-  line-height: 20px;
+const Label = styled(Typography)<StyleProps>`
   color: ${({ theme, isActive, category }) => {
     if (!isActive) return theme.neutral.get(13);
     switch (category) {
@@ -63,7 +61,7 @@ const CategoryChip: React.FC<{
 }> = ({ category, isActive, onPress }) => (
   <Pressable onPress={onPress}>
     <Wrapper category={category} isActive={isActive}>
-      <Label category={category} isActive={isActive}>
+      <Label size="Body/S" category={category} isActive={isActive}>
         {category}
       </Label>
     </Wrapper>

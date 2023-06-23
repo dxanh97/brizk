@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { FlatList, ListRenderItem, Text, View } from "react-native";
+import { FlatList, ListRenderItem, View } from "react-native";
 import { DateTime } from "luxon";
 import styled from "styled-components";
 
@@ -10,21 +10,16 @@ import CategoryChip from "./CategoryChip";
 import { useAppSelector } from "../../store";
 import { selectMonthlyTransactions } from "../../store/transactions.selectors";
 import { getMonthAndYear, groupTransactionsByDates } from "../../utils/helpers";
+import { FlexCenterBox, Typography } from "../../utils/shared-styles";
 
 const Wrapper = styled(View)`
   flex: 1;
 `;
-const FiltersWrapper = styled(View)`
-  display: flex;
+const FiltersWrapper = styled(FlexCenterBox)`
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   margin-bottom: 8px;
 `;
-const DateSeparator = styled(Text)`
-  font-family: "DM Sans";
-  font-size: 11px;
-  line-height: 16px;
+const DateSeparator = styled(Typography)`
   color: ${({ theme }) => theme.neutral.get(13)};
   background-color: ${({ theme }) => theme.neutral.get(1)};
   margin-bottom: 8px;
@@ -45,7 +40,7 @@ const TransactionsFlatList: React.FC<{
   const renderItem: ListRenderItem<string | Transaction> = useCallback(
     ({ item }) => {
       if (typeof item === "string") {
-        return <DateSeparator>{item}</DateSeparator>;
+        return <DateSeparator size="Label/M">{item}</DateSeparator>;
       }
       return <TransactionItem data={item} />;
     },

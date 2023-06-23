@@ -1,10 +1,12 @@
 import React, { useRef } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import styled, { useTheme } from "styled-components";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import TransactionDeckSwiper from "./TransactionDeckSwiper";
+
+import { FlexCenterBox, Typography } from "../utils/shared-styles";
 
 const Wrapper = styled(View)`
   /* padding: 24px; */
@@ -17,18 +19,12 @@ const Wrapper = styled(View)`
 const DeckWrapper = styled(View)`
   flex: 1;
 `;
-const Header = styled(View)`
-  display: flex;
+const Header = styled(FlexCenterBox)`
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
   position: relative;
   padding: 20px;
 `;
-const Title = styled(Text)`
-  font-family: "DM Sans";
-  font-size: 24px;
-  line-height: 36px;
+const Title = styled(Typography)`
   color: ${({ theme }) => theme.neutral.get(13)};
 `;
 const CloseButton = styled(Pressable)`
@@ -60,7 +56,7 @@ const UpsertTransactionBottomSheet: React.FC<{
       >
         <DeckWrapper>
           <Header>
-            <Title>New Transaction</Title>
+            <Title size="Title/M">New Transaction</Title>
             <CloseButton onPress={() => bottomSheetRef.current?.close()}>
               <MaterialIcons
                 name="close"

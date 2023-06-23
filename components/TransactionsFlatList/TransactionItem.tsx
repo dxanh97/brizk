@@ -4,15 +4,14 @@ import { RectButton, Swipeable } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
 
-import { formatAmount, getColorFromCategory } from "../../utils/helpers";
-import { CategoryProps, Transaction } from "../../utils/types";
 import { useAppDispatch } from "../../store";
 import { deleteTransaction } from "../../store/transactions.slice";
 
-const Amount = styled(Text)<CategoryProps>`
-  font-family: "PT Mono";
-  font-size: 16px;
-  line-height: 24px;
+import { formatAmount, getColorFromCategory } from "../../utils/helpers";
+import { CategoryProps, Transaction } from "../../utils/types";
+import { Typography } from "../../utils/shared-styles";
+
+const Amount = styled(Typography)<CategoryProps>`
   color: ${({ theme, category }) =>
     getColorFromCategory({
       theme,
@@ -20,10 +19,7 @@ const Amount = styled(Text)<CategoryProps>`
       neutralShade: 8,
     })};
 `;
-const Tags = styled(Text)`
-  font-family: "DM Sans";
-  font-size: 12px;
-  line-height: 16px;
+const Tags = styled(Typography)`
   color: ${({ theme }) => theme.neutral.get(7)};
 `;
 
@@ -130,8 +126,10 @@ const TransactionItem: React.FC<{
         backgroundColor: theme.neutral.get(2),
       }}
     >
-      <Amount category={data.category}>{formatAmount(data.amount)}</Amount>
-      <Tags>{data.tags.join(", ") || " "}</Tags>
+      <Amount size="Body/M" isNumber category={data.category}>
+        {formatAmount(data.amount)}
+      </Amount>
+      <Tags size="Body/S">{data.tags.join(", ") || " "}</Tags>
     </Swipeable>
   );
 };

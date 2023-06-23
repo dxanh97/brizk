@@ -1,15 +1,12 @@
 import React from "react";
-import { View } from "react-native";
 import { DateTime } from "luxon";
 import styled from "styled-components";
 
 import MonthChip from "./MonthChip";
+import { FlexCenterBox } from "../../utils/shared-styles";
 
-const Wrapper = styled(View)`
-  display: flex;
+const Wrapper = styled(FlexCenterBox)`
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   margin-bottom: 16px;
 `;
 

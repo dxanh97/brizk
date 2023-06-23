@@ -1,16 +1,17 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable } from "react-native";
 import { DateTime } from "luxon";
 import styled from "styled-components";
+
+import { FlexCenterBox, Typography } from "../../utils/shared-styles";
 
 interface StyleProps {
   isActive?: boolean;
 }
 
-const Wrapper = styled(View)<StyleProps>`
-  margin: 0 2px;
-  display: flex;
+const Wrapper = styled(FlexCenterBox)<StyleProps>`
   flex-direction: row;
+  margin: 0 2px;
   align-items: flex-start;
   padding: 6px 8px;
   border: 1px solid;
@@ -20,11 +21,7 @@ const Wrapper = styled(View)<StyleProps>`
     isActive ? theme.green : theme.neutral.get(1)};
 `;
 
-const Label = styled(Text)<StyleProps>`
-  font-family: "DM Sans";
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+const Label = styled(Typography)<StyleProps>`
   text-align: center;
   letter-spacing: 0.1px;
   color: ${({ theme, isActive }) =>
@@ -38,7 +35,9 @@ const MonthChip: React.FC<{
 }> = ({ data, isActive, onPress }) => (
   <Pressable onPress={onPress}>
     <Wrapper isActive={isActive}>
-      <Label isActive={isActive}>{data.toFormat("LL / yyyy")}</Label>
+      <Label isActive={isActive} size="Body/S">
+        {data.toFormat("LL / yyyy")}
+      </Label>
     </Wrapper>
   </Pressable>
 );
