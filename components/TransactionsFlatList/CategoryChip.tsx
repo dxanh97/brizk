@@ -1,10 +1,10 @@
 import React from "react";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 
 import styled, { DefaultTheme } from "styled-components";
 
 import { Category } from "../../utils/types";
-import { Typography } from "../../utils/shared-styles";
+import { FlexCenterBox, Typography } from "../../utils/shared-styles";
 
 interface StyleProps {
   category: Category;
@@ -14,40 +14,38 @@ interface StyleProps {
 const getColor = (theme: DefaultTheme, category: Category) => {
   switch (category) {
     case Category.MustHave:
-      return "#103900";
+      return theme.green[90];
     case Category.NiceToHave:
-      return "#4d2700";
+      return theme.orange[90];
     case Category.Uncategorized:
-      return theme.neutral.get(3);
+      return theme.neutral[20];
     default:
       return null;
   }
 };
 
-const Wrapper = styled(View)<StyleProps>`
-  display: flex;
-  padding: 8px 16px;
-  margin-right: 4px;
+const Wrapper = styled(FlexCenterBox)<StyleProps>`
+  padding: 4px 8px;
+  border-radius: 4px;
   border: ${({ theme, isActive, category }) => {
-    if (!isActive) return theme.neutral.get(6);
+    if (!isActive) return theme.neutral[50];
     return getColor(theme, category);
   }};
-  border-radius: 8px;
   background-color: ${({ theme, isActive, category }) => {
-    if (!isActive) return theme.neutral.get(1);
+    if (!isActive) return theme.neutral[0];
     return getColor(theme, category);
   }};
 `;
 const Label = styled(Typography)<StyleProps>`
   color: ${({ theme, isActive, category }) => {
-    if (!isActive) return theme.neutral.get(13);
+    if (!isActive) return theme.neutral[100];
     switch (category) {
       case Category.MustHave:
-        return theme.green;
+        return theme.green[80];
       case Category.NiceToHave:
-        return theme.orange;
+        return theme.orange[80];
       case Category.Uncategorized:
-        return theme.neutral.get(9);
+        return theme.neutral[80];
       default:
         return null;
     }
@@ -61,7 +59,7 @@ const CategoryChip: React.FC<{
 }> = ({ category, isActive, onPress }) => (
   <Pressable onPress={onPress}>
     <Wrapper category={category} isActive={isActive}>
-      <Label size="Body/S" category={category} isActive={isActive}>
+      <Label size="Label/M" category={category} isActive={isActive}>
         {category}
       </Label>
     </Wrapper>

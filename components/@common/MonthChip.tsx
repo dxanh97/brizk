@@ -16,16 +16,16 @@ const Wrapper = styled(FlexCenterBox)<StyleProps>`
   padding: 6px 8px;
   border: 1px solid;
   border-radius: 4px;
-  border-color: ${({ theme }) => theme.green};
+  border-color: ${({ theme }) => theme.green[80]};
   background-color: ${({ theme, isActive }) =>
-    isActive ? theme.green : theme.neutral.get(1)};
+    isActive ? theme.green[80] : theme.neutral[0]};
 `;
 
 const Label = styled(Typography)<StyleProps>`
   text-align: center;
   letter-spacing: 0.1px;
   color: ${({ theme, isActive }) =>
-    isActive ? theme.neutral.get(1) : theme.green};
+    isActive ? theme.neutral[0] : theme.green[80]};
 `;
 
 const MonthChip: React.FC<{

@@ -26,13 +26,13 @@ interface GetColorFromCategoryArgs {
 export const getColorFromCategory = ({
   theme,
   category,
-  neutralShade = 13,
+  neutralShade = 100,
   opacity = 1,
   neutralOpacity = 1,
 }: GetColorFromCategoryArgs) => {
-  if (category === MustHave) return hexToRGBA(theme.green, opacity);
-  if (category === NiceToHave) return hexToRGBA(theme.orange, opacity);
-  return hexToRGBA(theme.neutral.get(neutralShade)!, neutralOpacity);
+  if (category === MustHave) return hexToRGBA(theme.green[80], opacity);
+  if (category === NiceToHave) return hexToRGBA(theme.orange[80], opacity);
+  return hexToRGBA(theme.neutral[neutralShade], neutralOpacity);
 };
 
 export const formatAmount = (amount: number) =>

@@ -20,7 +20,7 @@ const Amount = styled(Typography)<CategoryProps>`
     })};
 `;
 const Tags = styled(Typography)`
-  color: ${({ theme }) => theme.neutral.get(7)};
+  color: ${({ theme }) => theme.neutral[60]};
 `;
 
 const TransactionItem: React.FC<{
@@ -66,7 +66,7 @@ const TransactionItem: React.FC<{
               fontFamily: "DM Sans",
               fontSize: 12,
               lineHeight: 16,
-              color: theme.neutral.get(13),
+              color: theme.neutral[100],
               marginTop: 8,
             }}
           >
@@ -88,16 +88,16 @@ const TransactionItem: React.FC<{
       }}
     >
       {renderRightButton(
-        <MaterialIcons name="edit" size={24} color={theme.neutral.get(13)} />,
+        <MaterialIcons name="edit" size={24} color={theme.neutral[100]} />,
         "Edit",
-        theme.neutral.get(3)!,
+        theme.neutral[20],
         160,
         progress,
       )}
       {renderRightButton(
-        <MaterialIcons name="delete" size={24} color={theme.neutral.get(13)} />,
+        <MaterialIcons name="delete" size={24} color={theme.neutral[100]} />,
         "Delete",
-        theme.red,
+        theme.red[80],
         80,
         progress,
         () => dispatch(deleteTransaction(data.id)),
@@ -123,7 +123,7 @@ const TransactionItem: React.FC<{
           category: data.category,
           neutralShade: 8,
         }),
-        backgroundColor: theme.neutral.get(2),
+        backgroundColor: theme.neutral[10],
       }}
     >
       <Amount size="Body/M" isNumber category={data.category}>

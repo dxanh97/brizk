@@ -55,26 +55,26 @@ const Header = styled(FlexCenterBox)`
 `;
 const DatePicker = styled(Typography)`
   font-weight: 500;
-  color: ${({ theme }) => theme.neutral.get(13)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 const AmountInput = styled(MaskInput)`
   ${typography};
   font-weight: 400;
-  color: ${({ theme }) => theme.neutral.get(7)};
+  color: ${({ theme }) => theme.neutral[60]};
   margin: 40px 0;
 `;
 const Tags = styled(Typography)`
   letter-spacing: 0.5px;
   padding: 12px 0;
-  color: ${({ theme }) => theme.neutral.get(13)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 const TagInput = styled(TextInput)`
   ${typography};
   ${flexCenter};
   padding: 12px;
   border-radius: 12px;
-  background: ${({ theme }) => hexToRGBA(theme.neutral.get(13)!, 0.04)};
-  color: ${({ theme }) => theme.neutral.get(13)};
+  background: ${({ theme }) => hexToRGBA(theme.neutral[100], 0.04)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 const StyledBlurView = styled(BlurView)`
   ${flexCenter};
@@ -86,7 +86,7 @@ const StyledBlurView = styled(BlurView)`
   border-radius: 20px;
 `;
 const StyledBlurContent = styled(Typography)`
-  color: ${({ theme }) => theme.neutral.get(13)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 
 interface Props extends CategoryProps {
@@ -177,14 +177,14 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
         keyboardType="numeric"
         autoFocus={onTopOfDeck}
         enablesReturnKeyAutomatically
-        placeholderTextColor={theme.neutral.get(7)}
+        placeholderTextColor={theme.neutral[60]}
         onChangeText={(_, unmasked) => setAmount(unmasked)}
       />
       <Tags size="Body/M">{tags.join(", ")}</Tags>
       <TagInput
         size="Body/M"
         placeholder="Add tags"
-        placeholderTextColor={theme.neutral.get(7)}
+        placeholderTextColor={theme.neutral[60]}
         blurOnSubmit={false}
         onChangeText={setCurrentText}
         value={currentText}

@@ -27,7 +27,7 @@ const PieWrapper = styled(View)`
 `;
 const TotalAmount = styled(Typography)`
   position: absolute;
-  color: ${({ theme }) => theme.neutral.get(13)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 const CategoryCardsWrapper = styled(FlexCenterBox)`
   flex-direction: row;
@@ -37,7 +37,7 @@ const CategoryCard = styled(FlexCenterBox)`
   flex: 1;
   padding: 16px 0;
   margin: 0 2px;
-  background-color: ${({ theme }) => theme.neutral.get(3)};
+  background-color: ${({ theme }) => theme.neutral[20]};
 `;
 const CategoryLabel = styled(Typography)<CategoryProps>`
   margin-bottom: 8px;
@@ -76,9 +76,11 @@ const PieChart: React.FC<{
         <PieWrapper>
           <Svg viewBox="0 0 200 200">
             {percentages.map((p, index) => {
-              let color = theme.neutral.get(5)!;
-              if (index === 0) color = theme.green;
-              if (index === 1) color = theme.orange;
+              const colors = [
+                theme.green[80],
+                theme.orange[80],
+                theme.neutral[40],
+              ];
 
               return (
                 <PieChartSegment
@@ -86,7 +88,7 @@ const PieChart: React.FC<{
                   angle={startAngles[index]}
                   percent={p}
                   progress={progress}
-                  color={color}
+                  color={colors[index]}
                 />
               );
             })}

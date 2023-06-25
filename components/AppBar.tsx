@@ -6,7 +6,7 @@ import { Font } from "../utils/types";
 
 const Wrapper = styled(FlexCenterBox)`
   flex-direction: row;
-  background-color: ${({ theme }) => theme.neutral.get(0)};
+  background-color: ${({ theme }) => theme.neutral[0]};
   padding: 20px;
 `;
 const LogoWrapper = styled(FlexCenterBox)`
@@ -15,7 +15,8 @@ const LogoWrapper = styled(FlexCenterBox)`
 const LogoText = styled(Typography)<{ isDot?: boolean }>`
   font-family: ${Font.DM_MONO};
   font-weight: 600;
-  color: ${({ isDot, theme }) => (isDot ? theme.green : theme.neutral.get(13))};
+  color: ${({ theme, isDot }) =>
+    isDot ? theme.green[80] : theme.neutral[100]};
 `;
 
 const AppBar: React.FC = () => (

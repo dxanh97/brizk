@@ -25,7 +25,7 @@ const Header = styled(FlexCenterBox)`
   padding: 20px;
 `;
 const Title = styled(Typography)`
-  color: ${({ theme }) => theme.neutral.get(13)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 const CloseButton = styled(Pressable)`
   position: absolute;
@@ -49,7 +49,7 @@ const UpsertTransactionBottomSheet: React.FC<{
         enablePanDownToClose
         onClose={onClose}
         backgroundStyle={{
-          backgroundColor: theme.neutral.get(2),
+          backgroundColor: theme.neutral[10],
           borderRadius: 0,
         }}
         handleComponent={null}
@@ -61,7 +61,7 @@ const UpsertTransactionBottomSheet: React.FC<{
               <MaterialIcons
                 name="close"
                 size={24}
-                color={theme.neutral.get(13)}
+                color={theme.neutral[100]}
               />
             </CloseButton>
           </Header>

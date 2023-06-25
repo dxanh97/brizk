@@ -26,7 +26,7 @@ const HeaderWrapper = styled(FlexCenterBox)`
   margin-bottom: 68px;
 `;
 const Header = styled(Typography)`
-  color: ${({ theme }) => theme.neutral.get(13)};
+  color: ${({ theme }) => theme.neutral[100]};
 `;
 const ChevronButtonsWrapper = styled(View)`
   position: absolute;
@@ -63,7 +63,7 @@ const StyledButton = styled(Pressable)`
   flex: 1;
 `;
 const StyledButtonLabel = styled(Typography)`
-  color: ${({ theme }) => theme.neutral.get(6)};
+  color: ${({ theme }) => theme.neutral[50]};
 `;
 
 const App: React.FC = () => {
@@ -107,7 +107,7 @@ const App: React.FC = () => {
           <MaterialIcons
             name="chevron-left"
             size={24}
-            color={theme.neutral.get(13)}
+            color={theme.neutral[100]}
           />
         </PrevButton>
         <NextButton
@@ -118,7 +118,7 @@ const App: React.FC = () => {
           <MaterialIcons
             name="chevron-right"
             size={24}
-            color={theme.neutral.get(13)}
+            color={theme.neutral[100]}
           />
         </NextButton>
       </ChevronButtonsWrapper>
@@ -133,7 +133,7 @@ const App: React.FC = () => {
           <MaterialIcons
             name="add-circle"
             size={24}
-            color={theme.neutral.get(6)}
+            color={theme.neutral[50]}
             onPress={() => setOpenBottomSheet(true)}
           />
           <StyledButtonLabel size="Body/S">New</StyledButtonLabel>
@@ -142,7 +142,7 @@ const App: React.FC = () => {
           <MaterialIcons
             name="content-copy"
             size={24}
-            color={theme.neutral.get(6)}
+            color={theme.neutral[50]}
           />
           <StyledButtonLabel size="Body/S">Categorize</StyledButtonLabel>
         </StyledButton>

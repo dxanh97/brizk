@@ -20,8 +20,8 @@ const FiltersWrapper = styled(FlexCenterBox)`
   margin-bottom: 8px;
 `;
 const DateSeparator = styled(Typography)`
-  color: ${({ theme }) => theme.neutral.get(13)};
-  background-color: ${({ theme }) => theme.neutral.get(1)};
+  color: ${({ theme }) => theme.neutral[100]};
+  background-color: ${({ theme }) => theme.neutral[0]};
   margin-bottom: 8px;
 `;
 

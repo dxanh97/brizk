@@ -72,7 +72,7 @@ const TransactionDeckSwiper: React.FC = () => {
         onSwiping={handleOnSwiping}
         overlayOpacityVerticalThreshold={10}
         overlayOpacityHorizontalThreshold={10}
-        backgroundColor={theme.neutral.get(2)}
+        backgroundColor={theme.neutral[10]}
         onSwipedAborted={resetSelectingCategory}
         onSwiped={handleOnSwiped}
         renderCard={(_, index) => {
