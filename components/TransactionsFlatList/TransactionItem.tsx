@@ -16,7 +16,7 @@ const Amount = styled(Typography)<CategoryProps>`
     getColorFromCategory({
       theme,
       category,
-      neutralShade: 8,
+      neutralShade: 70,
     })};
 `;
 const Tags = styled(Typography)`
@@ -121,7 +121,7 @@ const TransactionItem: React.FC<{
         borderRightColor: getColorFromCategory({
           theme,
           category: data.category,
-          neutralShade: 8,
+          neutralShade: 70,
         }),
         backgroundColor: theme.neutral[10],
       }}

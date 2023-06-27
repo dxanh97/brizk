@@ -13,7 +13,7 @@ const Wrapper = styled(View)<CategoryProps>`
     getColorFromCategory({
       theme,
       category,
-      neutralShade: 5,
+      neutralShade: 40,
       opacity: 0.08,
     })};
   align-self: flex-start;
@@ -23,7 +23,7 @@ const Label = styled(Typography)<CategoryProps>`
     getColorFromCategory({
       theme,
       category,
-      neutralShade: 8,
+      neutralShade: 70,
     })};
 `;
 
