@@ -10,6 +10,8 @@ const selectors = transactionsAdaptor.getSelectors<RootState>(
   (s) => s.transactions,
 );
 
+const selectTransactions = (state: RootState) => selectors.selectAll(state);
+
 const selectTransactionsMap = (state: RootState) =>
   selectors.selectEntities(state);
 
@@ -52,4 +54,10 @@ export const selectMonthlySummary = createSelector(
       uncategorized,
     };
   },
+);
+
+export const selectUncategorizedTransactions = createSelector(
+  [selectTransactions],
+  (transactions) =>
+    transactions.filter((t) => t.category === Category.Uncategorized),
 );
