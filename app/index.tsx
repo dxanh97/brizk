@@ -4,6 +4,9 @@ import { DateTime } from "luxon";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
 
+import { useAppSelector } from "../store";
+import { selectUncategorizedTransactions } from "../store/transactions.selectors";
+
 import MonthChipFilters from "../components/@common/MonthChipFilters";
 import Summary from "../components/summary";
 import TransactionsFlatList from "../components/TransactionsFlatList";
@@ -63,12 +66,30 @@ const StyledButton = styled(Pressable)`
   flex: 1;
 `;
 const StyledButtonLabel = styled(Typography)`
-  color: ${({ theme }) => theme.neutral[50]};
+  color: ${({ theme }) => theme.neutral[100]};
+  margin-top: 8px;
+`;
+const RelativeWrapper = styled(View)`
+  position: relative;
+`;
+const CountBadge = styled(Typography)`
+  border: 2px solid ${({ theme }) => theme.neutral[0]};
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.green[80]};
+  padding: 2px 6px;
+  position: absolute;
+  left: 8px;
+  top: -8px;
+  z-index: 2;
+  overflow: hidden;
 `;
 
 const App: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState(
     DateTime.now().startOf("month"),
+  );
+  const uncategorizedTransactions = useAppSelector(
+    selectUncategorizedTransactions,
   );
 
   const scrollViewRef = useRef<ScrollView>(null);
@@ -129,21 +150,27 @@ const App: React.FC = () => {
         />
       </MonthChipFiltersWrapper>
       <BottomButtonsWrapper>
-        <StyledButton>
+        <StyledButton onPress={() => setOpenBottomSheet(true)}>
           <MaterialIcons
             name="add-circle"
             size={24}
-            color={theme.neutral[50]}
-            onPress={() => setOpenBottomSheet(true)}
+            color={theme.neutral[100]}
           />
-          <StyledButtonLabel size="Body/S">New</StyledButtonLabel>
+          <StyledButtonLabel size="Body/S">New Transaction</StyledButtonLabel>
         </StyledButton>
         <StyledButton>
-          <MaterialIcons
-            name="content-copy"
-            size={24}
-            color={theme.neutral[50]}
-          />
+          <RelativeWrapper>
+            {uncategorizedTransactions.length > 0 && (
+              <CountBadge size="Label/M" isNumber>
+                {uncategorizedTransactions.length}
+              </CountBadge>
+            )}
+            <MaterialIcons
+              name="category"
+              size={24}
+              color={theme.neutral[100]}
+            />
+          </RelativeWrapper>
           <StyledButtonLabel size="Body/S">Categorize</StyledButtonLabel>
         </StyledButton>
       </BottomButtonsWrapper>
