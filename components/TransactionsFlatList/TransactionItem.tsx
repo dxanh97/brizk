@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Animated, Text, View } from "react-native";
+import { Animated, View } from "react-native";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
@@ -7,10 +7,31 @@ import styled, { useTheme } from "styled-components";
 import { useAppDispatch } from "../../store";
 import { deleteTransaction } from "../../store/transactions.slice";
 
-import { formatAmount, getColorFromCategory } from "../../utils/helpers";
+import {
+  formatAmount,
+  getColorFromCategory,
+  hexToRGBA,
+} from "../../utils/helpers";
 import { CategoryProps, Transaction } from "../../utils/types";
-import { Typography } from "../../utils/shared-styles";
+import {
+  FlexCenterBox,
+  Typography,
+  flexCenter,
+} from "../../utils/shared-styles";
 
+const TagsWrapper = styled(FlexCenterBox)`
+  flex-direction: row;
+  flex: 1;
+  justify-content: left;
+  overflow: hidden;
+`;
+const Tag = styled(Typography)`
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+  color: ${({ theme }) => theme.neutral[100]};
+  background-color: ${({ theme }) => hexToRGBA(theme.neutral[100], 0.08)};
+`;
 const Amount = styled(Typography)<CategoryProps>`
   color: ${({ theme, category }) =>
     getColorFromCategory({
@@ -18,10 +39,50 @@ const Amount = styled(Typography)<CategoryProps>`
       category,
       neutralShade: 70,
     })};
+  flex: 1;
+  text-align: right;
 `;
-const Tags = styled(Typography)`
-  color: ${({ theme }) => theme.neutral[60]};
+const RightButtonWrapper = styled(View)`
+  width: 160px;
+  flex-direction: row;
+  margin-left: 16px;
 `;
+const RightButton = styled(RectButton)<{ color: string }>`
+  ${flexCenter};
+  flex: 1;
+  background-color: ${({ color }) => color};
+`;
+const RightButtonText = styled(Typography)`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.neutral[100]};
+`;
+const renderRightButton = (
+  icon: React.ReactNode,
+  text: string,
+  color: string,
+  x: number,
+  progress: Animated.AnimatedInterpolation<number>,
+  swipeableRef: React.RefObject<Swipeable>,
+  callback: () => void,
+) => {
+  const trans = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [x, 0],
+  });
+  const pressHandler = () => {
+    callback();
+    swipeableRef.current?.close();
+  };
+
+  return (
+    <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
+      <RightButton onPress={pressHandler} color={color}>
+        {icon}
+        <RightButtonText size="Label/M">{text}</RightButtonText>
+      </RightButton>
+    </Animated.View>
+  );
+};
 
 const TransactionItem: React.FC<{
   data: Transaction;
@@ -30,79 +91,30 @@ const TransactionItem: React.FC<{
   const theme = useTheme();
 
   const swipeableRef = useRef<Swipeable>(null);
-  const renderRightButton = (
-    icon: React.ReactNode,
-    text: string,
-    color: string,
-    x: number,
-    progress: Animated.AnimatedInterpolation<number>,
-    callback?: () => void,
-  ) => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [x, 0],
-    });
-    const pressHandler = () => {
-      callback?.();
-      swipeableRef.current?.close();
-    };
-
-    return (
-      <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }}>
-        <RectButton
-          style={{
-            backgroundColor: color,
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={pressHandler}
-        >
-          {icon}
-          <Text
-            style={{
-              fontFamily: "DM Sans",
-              fontSize: 12,
-              lineHeight: 16,
-              color: theme.neutral[100],
-              marginTop: 8,
-            }}
-          >
-            {text}
-          </Text>
-        </RectButton>
-      </Animated.View>
-    );
-  };
 
   const renderRightButtons = (
     progress: Animated.AnimatedInterpolation<number>,
   ) => (
-    <View
-      style={{
-        width: 160,
-        flexDirection: "row",
-        marginRight: -4,
-      }}
-    >
+    <RightButtonWrapper>
       {renderRightButton(
         <MaterialIcons name="edit" size={24} color={theme.neutral[100]} />,
         "Edit",
         theme.neutral[20],
         160,
         progress,
+        swipeableRef,
+        () => {},
       )}
       {renderRightButton(
         <MaterialIcons name="delete" size={24} color={theme.neutral[100]} />,
         "Delete",
-        theme.red[80],
+        theme.red[30],
         80,
         progress,
+        swipeableRef,
         () => dispatch(deleteTransaction(data.id)),
       )}
-    </View>
+    </RightButtonWrapper>
   );
 
   return (
@@ -113,23 +125,23 @@ const TransactionItem: React.FC<{
       enableTrackpadTwoFingerGesture
       rightThreshold={40}
       renderRightActions={renderRightButtons}
-      containerStyle={{
-        padding: 16,
-        borderRadius: 4,
-        marginBottom: 8,
-        borderRightWidth: 4,
-        borderRightColor: getColorFromCategory({
-          theme,
-          category: data.category,
-          neutralShade: 70,
-        }),
-        backgroundColor: theme.neutral[10],
+      childrenContainerStyle={{
+        paddingVertical: 16,
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "row",
       }}
     >
+      <TagsWrapper>
+        {data.tags.map((t) => (
+          <Tag key={t} size="Label/M">
+            {t}
+          </Tag>
+        ))}
+      </TagsWrapper>
       <Amount size="Body/M" isNumber category={data.category}>
         {formatAmount(data.amount)}
       </Amount>
-      <Tags size="Body/S">{data.tags.join(", ") || " "}</Tags>
     </Swipeable>
   );
 };
