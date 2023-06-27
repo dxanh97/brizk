@@ -47,9 +47,9 @@ const Label = styled(Typography)<StyleProps>`
 
 const CategoryChip: React.FC<{
   category: Category;
-  isActive: boolean;
-  onPress: () => void;
-}> = ({ category, isActive, onPress }) => (
+  isActive?: boolean;
+  onPress?: () => void;
+}> = ({ category, isActive = false, onPress }) => (
   <Pressable onPress={onPress}>
     <Wrapper category={category} isActive={isActive}>
       <Label size="Label/M" category={category} isActive={isActive}>
