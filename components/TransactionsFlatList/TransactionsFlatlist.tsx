@@ -5,10 +5,12 @@ import styled from "styled-components";
 
 import { Category, Transaction } from "../../utils/types";
 
-import TransactionItem from "./TransactionItem";
-import CategoryChip from "./CategoryChip";
 import { useAppSelector } from "../../store";
 import { selectMonthlyTransactions } from "../../store/transactions.selectors";
+
+import TransactionItem from "./TransactionItem";
+import CategoryChip from "../@common/CategoryChip";
+
 import { getMonthAndYear, groupTransactionsByDates } from "../../utils/helpers";
 import { FlexCenterBox, Typography } from "../../utils/shared-styles";
 
