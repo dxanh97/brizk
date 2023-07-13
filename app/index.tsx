@@ -189,6 +189,7 @@ const App: React.FC = () => {
           <StyledButtonLabel size="Body/S">New Transaction</StyledButtonLabel>
         </StyledButton>
         <StyledButton
+          disabled={uncategorizedTransactions.length === 0}
           onPress={() => {
             setOpenBottomSheet(true);
             setUpdatingTransactionIds(
