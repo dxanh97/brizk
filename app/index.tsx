@@ -9,7 +9,7 @@ import { selectUncategorizedTransactions } from "../store/transactions.selectors
 import { deleteTransaction } from "../store/transactions.slice";
 
 import MonthChipFilters from "../components/@common/MonthChipFilters";
-import Summary from "../components/summary";
+import Summary from "../components/Summary";
 import TransactionsFlatList from "../components/TransactionsFlatList";
 import UpsertTransactionBottomSheet from "../components/UpsertTransactionBottomSheet";
 
