@@ -31,9 +31,17 @@ const Separator = styled(View)`
   background-color: ${({ theme }) => theme.neutral[20]};
 `;
 
-const TransactionsFlatList: React.FC<{
+interface Props {
   selectedMonth: DateTime;
-}> = ({ selectedMonth }) => {
+  onTransactionEdit: (transactionId: Transaction["id"]) => void;
+  onTransactionDelete: (transactionId: Transaction["id"]) => void;
+}
+
+const TransactionsFlatList: React.FC<Props> = ({
+  selectedMonth,
+  onTransactionEdit,
+  onTransactionDelete,
+}) => {
   const transactions = useAppSelector((s) =>
     selectMonthlyTransactions(s, getMonthAndYear(selectedMonth.toMillis())),
   );
@@ -48,9 +56,15 @@ const TransactionsFlatList: React.FC<{
       if (typeof item === "string") {
         return <DateItem size="Label/M">{item}</DateItem>;
       }
-      return <TransactionItem data={item} />;
+      return (
+        <TransactionItem
+          data={item}
+          onEdit={() => onTransactionEdit(item.id)}
+          onDelete={() => onTransactionDelete(item.id)}
+        />
+      );
     },
-    [],
+    [onTransactionEdit, onTransactionDelete],
   );
 
   return (

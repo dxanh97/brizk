@@ -91,6 +91,9 @@ const StyledBlurContent = styled(Typography)`
 
 interface Props extends CategoryProps {
   onTopOfDeck: boolean;
+  amount?: number;
+  tags?: string[];
+  category?: Category;
   selectingCategory?: Category;
 }
 
@@ -101,8 +104,10 @@ export interface ForwardedRef {
 
 const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
   const {
-    category,
     onTopOfDeck,
+    amount: propAmount,
+    tags: propTags,
+    category: propCategory,
     selectingCategory: propSelectingCategory,
   } = props;
   const today = getStartOfTheDay(new Date().getTime());
@@ -125,10 +130,10 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
   };
 
   const amountRef = useRef<TextInput>(null);
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(`${propAmount ?? ""}`);
 
   const [currentText, setCurrentText] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(propTags ?? []);
   const handleOnTagReturn = () => {
     setCurrentText("");
     if (tags.includes(currentText)) return;
@@ -144,13 +149,9 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
     [amount, tags],
   );
 
-  const selectingCategory = onTopOfDeck
-    ? propSelectingCategory ?? category
-    : category;
-
   const theme = useTheme();
   return (
-    <Wrapper category={selectingCategory}>
+    <Wrapper category={propSelectingCategory}>
       <Header>
         <DateTimePickerModal
           isVisible={isOpenDatePicker}
@@ -163,7 +164,9 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
           {formattedSelectedDate}
         </DatePicker>
         <CategoryTag
-          category={selectingCategory ?? category ?? Category.Uncategorized}
+          category={
+            propSelectingCategory ?? propCategory ?? Category.Uncategorized
+          }
         />
       </Header>
       <AmountInput
@@ -190,10 +193,10 @@ const TransactionCard = forwardRef<ForwardedRef, Props>((props, ref) => {
         value={currentText}
         onSubmitEditing={handleOnTagReturn}
       />
-      {selectingCategory && (
+      {propSelectingCategory && (
         <StyledBlurView intensity={10}>
           <StyledBlurContent size="Title/M">
-            {selectingCategory}
+            {propSelectingCategory}
           </StyledBlurContent>
         </StyledBlurView>
       )}

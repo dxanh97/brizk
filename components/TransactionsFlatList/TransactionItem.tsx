@@ -4,9 +4,6 @@ import { RectButton, Swipeable } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
 
-import { useAppDispatch } from "../../store";
-import { deleteTransaction } from "../../store/transactions.slice";
-
 import {
   formatAmount,
   getColorFromCategory,
@@ -86,8 +83,9 @@ const renderRightButton = (
 
 const TransactionItem: React.FC<{
   data: Transaction;
-}> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  onEdit: () => void;
+  onDelete: () => void;
+}> = ({ data, onEdit, onDelete }) => {
   const theme = useTheme();
 
   const swipeableRef = useRef<Swipeable>(null);
@@ -103,7 +101,7 @@ const TransactionItem: React.FC<{
         160,
         progress,
         swipeableRef,
-        () => {},
+        onEdit,
       )}
       {renderRightButton(
         <MaterialIcons name="delete" size={24} color={theme.neutral[100]} />,
@@ -112,7 +110,7 @@ const TransactionItem: React.FC<{
         80,
         progress,
         swipeableRef,
-        () => dispatch(deleteTransaction(data.id)),
+        onDelete,
       )}
     </RightButtonWrapper>
   );

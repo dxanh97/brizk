@@ -3,7 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { sum } from "lodash";
 
 import { RootState } from ".";
-import { Category } from "../utils/types";
+import { Category, Transaction } from "../utils/types";
 import { transactionsAdaptor } from "./transactions.slice";
 
 const selectors = transactionsAdaptor.getSelectors<RootState>(
@@ -60,4 +60,9 @@ export const selectUncategorizedTransactions = createSelector(
   [selectTransactions],
   (transactions) =>
     transactions.filter((t) => t.category === Category.Uncategorized),
+);
+
+export const selectTransactionsByIds = createSelector(
+  [selectTransactionsMap, (_, ids: Array<Transaction["id"]>) => ids],
+  (transactionsMap, ids) => ids.map((id) => transactionsMap[id]!),
 );

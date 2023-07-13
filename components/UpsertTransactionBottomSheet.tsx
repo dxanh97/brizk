@@ -7,9 +7,9 @@ import styled, { useTheme } from "styled-components";
 import TransactionDeckSwiper from "./TransactionDeckSwiper";
 
 import { FlexCenterBox, Typography } from "../utils/shared-styles";
+import { Transaction } from "../utils/types";
 
 const Wrapper = styled(View)`
-  /* padding: 24px; */
   position: absolute;
   top: 0;
   left: 0;
@@ -34,8 +34,9 @@ const CloseButton = styled(Pressable)`
 
 const UpsertTransactionBottomSheet: React.FC<{
   open: boolean;
+  transactionIds: Array<Transaction["id"]>;
   onClose: () => void;
-}> = ({ open, onClose }) => {
+}> = ({ open, transactionIds, onClose }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const theme = useTheme();
 
@@ -56,7 +57,11 @@ const UpsertTransactionBottomSheet: React.FC<{
       >
         <DeckWrapper>
           <Header>
-            <Title size="Title/M">New Transaction</Title>
+            <Title size="Title/M">
+              {transactionIds.length > 0
+                ? "Edit Transaction"
+                : "New Transaction"}
+            </Title>
             <CloseButton onPress={() => bottomSheetRef.current?.close()}>
               <MaterialIcons
                 name="close"
@@ -65,7 +70,10 @@ const UpsertTransactionBottomSheet: React.FC<{
               />
             </CloseButton>
           </Header>
-          <TransactionDeckSwiper />
+          <TransactionDeckSwiper
+            transactionIds={transactionIds}
+            onSwipedAll={onClose}
+          />
         </DeckWrapper>
       </BottomSheet>
     </Wrapper>

@@ -1,11 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { View } from "react-native";
 import * as Crypto from "expo-crypto";
 import Swiper from "react-native-deck-swiper";
 import { useTheme } from "styled-components";
 
-import { useAppDispatch } from "../../store";
-import { addTransactions } from "../../store/transactions.slice";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { selectTransactionsByIds } from "../../store/transactions.selectors";
+import {
+  addTransactions,
+  updateTransaction,
+} from "../../store/transactions.slice";
 
 import { Category, Transaction } from "../../utils/types";
 
@@ -13,10 +17,25 @@ import TransactionCard, { ForwardedRef } from "./TransactionCard";
 
 const { MustHave, NiceToHave, Uncategorized } = Category;
 
-const cardsPlaceholder = new Array(1000).fill(0);
+interface Props {
+  transactionIds: Array<Transaction["id"]>;
+  onSwipedAll: () => void;
+}
 
-const TransactionDeckSwiper: React.FC = () => {
+const TransactionDeckSwiper: React.FC<Props> = ({
+  transactionIds,
+  onSwipedAll,
+}) => {
   const dispatch = useAppDispatch();
+  const transactions = useAppSelector((s) =>
+    selectTransactionsByIds(s, transactionIds),
+  );
+  const cardsPlaceholder = useMemo(() => {
+    if (transactions.length === 0) {
+      return new Array(1000).fill(0);
+    }
+    return transactions;
+  }, [transactions]);
 
   const theme = useTheme();
   const [selectingCategory, setSelectingCategory] = useState<Category>();
@@ -46,25 +65,34 @@ const TransactionDeckSwiper: React.FC = () => {
     if (!selectingCategory) {
       return;
     }
+
+    const existingTransaction = transactions[cardIndex];
     const amount = topCardRef.current?.getAmount() || 0;
     const tags = topCardRef.current?.getTags() || [];
     const transaction: Transaction = {
-      id: Crypto.randomUUID(),
+      id: existingTransaction?.id ?? Crypto.randomUUID(),
       amount,
       tags,
       timestamp: new Date().getTime(),
       category: selectingCategory ?? Category.Uncategorized,
     };
-    dispatch(addTransactions([transaction]));
+    if (!existingTransaction) {
+      dispatch(addTransactions([transaction]));
+    } else {
+      dispatch(updateTransaction(transaction));
+    }
 
     setOnTopIndex(cardIndex + 1);
     resetSelectingCategory();
+
+    if (cardIndex === cardsPlaceholder.length - 1) {
+      onSwipedAll();
+    }
   };
 
   return (
     <View>
       <Swiper
-        infinite
         stackSize={2}
         cards={cardsPlaceholder}
         animateCardOpacity
@@ -75,12 +103,17 @@ const TransactionDeckSwiper: React.FC = () => {
         backgroundColor={theme.neutral[10]}
         onSwipedAborted={resetSelectingCategory}
         onSwiped={handleOnSwiped}
-        renderCard={(_, index) => {
+        renderCard={(data: Transaction | 0, index) => {
           const isOnTop = onTopIndex === index;
+          const isNew = data === 0;
+
           return (
             <TransactionCard
               ref={isOnTop ? topCardRef : null}
               onTopOfDeck={isOnTop}
+              amount={isNew ? undefined : data.amount}
+              tags={isNew ? [] : data.tags}
+              category={isNew ? Category.Uncategorized : data.category}
               selectingCategory={selectingCategory}
             />
           );

@@ -1,11 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Dimensions, Pressable, ScrollView, View } from "react-native";
 import { DateTime } from "luxon";
 import { MaterialIcons } from "@expo/vector-icons";
 import styled, { useTheme } from "styled-components";
 
-import { useAppSelector } from "../store";
+import { useAppSelector, useAppDispatch } from "../store";
 import { selectUncategorizedTransactions } from "../store/transactions.selectors";
+import { deleteTransaction } from "../store/transactions.slice";
 
 import MonthChipFilters from "../components/@common/MonthChipFilters";
 import Summary from "../components/summary";
@@ -13,6 +14,7 @@ import TransactionsFlatList from "../components/TransactionsFlatList";
 import UpsertTransactionBottomSheet from "../components/UpsertTransactionBottomSheet";
 
 import { flexCenter, FlexCenterBox, Typography } from "../utils/shared-styles";
+import { Transaction } from "../utils/types";
 
 const { width } = Dimensions.get("window");
 const viewWidth = width - 32;
@@ -85,6 +87,7 @@ const CountBadge = styled(Typography)`
 `;
 
 const App: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [selectedMonth, setSelectedMonth] = useState(
     DateTime.now().startOf("month"),
   );
@@ -95,6 +98,24 @@ const App: React.FC = () => {
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [openBottomSheet, setOpenBottomSheet] = useState(false);
+  const [updatingTransactionIds, setUpdatingTransactionIds] = useState<
+    Array<Transaction["id"]>
+  >([]);
+
+  const handleOnTransactionEdit = useCallback(
+    (transactionId: Transaction["id"]) => {
+      setUpdatingTransactionIds([transactionId]);
+      setOpenBottomSheet(true);
+    },
+    [],
+  );
+
+  const handleOnTransactionDelete = useCallback(
+    (transactionId: Transaction["id"]) => {
+      dispatch(deleteTransaction(transactionId));
+    },
+    [dispatch],
+  );
 
   const theme = useTheme();
   return (
@@ -116,7 +137,11 @@ const App: React.FC = () => {
           <HeaderWrapper>
             <Header size="Title/M">History</Header>
           </HeaderWrapper>
-          <TransactionsFlatList selectedMonth={selectedMonth} />
+          <TransactionsFlatList
+            selectedMonth={selectedMonth}
+            onTransactionEdit={handleOnTransactionEdit}
+            onTransactionDelete={handleOnTransactionDelete}
+          />
         </ViewWrapper>
       </ScrollView>
       <ChevronButtonsWrapper>
@@ -150,7 +175,12 @@ const App: React.FC = () => {
         />
       </MonthChipFiltersWrapper>
       <BottomButtonsWrapper>
-        <StyledButton onPress={() => setOpenBottomSheet(true)}>
+        <StyledButton
+          onPress={() => {
+            setOpenBottomSheet(true);
+            setUpdatingTransactionIds([]);
+          }}
+        >
           <MaterialIcons
             name="add-circle"
             size={24}
@@ -158,7 +188,14 @@ const App: React.FC = () => {
           />
           <StyledButtonLabel size="Body/S">New Transaction</StyledButtonLabel>
         </StyledButton>
-        <StyledButton>
+        <StyledButton
+          onPress={() => {
+            setOpenBottomSheet(true);
+            setUpdatingTransactionIds(
+              uncategorizedTransactions.map((t) => t.id),
+            );
+          }}
+        >
           <RelativeWrapper>
             {uncategorizedTransactions.length > 0 && (
               <CountBadge size="Label/M" isNumber>
@@ -176,6 +213,7 @@ const App: React.FC = () => {
       </BottomButtonsWrapper>
       <UpsertTransactionBottomSheet
         open={openBottomSheet}
+        transactionIds={updatingTransactionIds}
         onClose={() => setOpenBottomSheet(false)}
       />
     </Wrapper>
